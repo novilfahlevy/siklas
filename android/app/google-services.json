@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "613840499789",
+    "project_id": "siklas-cd9d1",
+    "storage_bucket": "siklas-cd9d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613840499789:android:3ad3f686b3f0940b8a9804",
+        "android_client_info": {
+          "package_name": "com.example.siklas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATiNg2h_TVXn3fd7uquFpdSEwj3oD2e5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
