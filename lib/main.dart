@@ -4,6 +4,7 @@ import 'package:siklas/firebase_options.dart';
 import 'package:siklas/screens/classes_screen.dart';
 import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/screens/splash_screen.dart';
+import 'package:siklas/view_models/initial_name_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +22,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider<LoginViewModel>(create: (context) => LoginViewModel(),),
         ChangeNotifierProvider<LogoutViewModel>(create: (context) => LogoutViewModel(),),
-        ChangeNotifierProvider<SplashViewModel>(create: (context) => SplashViewModel(),)
+        ChangeNotifierProvider<SplashViewModel>(create: (context) => SplashViewModel(),),
+        ChangeNotifierProvider<InitialNameViewModel>(create: (context) => InitialNameViewModel(),)
       ],
       child: const App(),
     )

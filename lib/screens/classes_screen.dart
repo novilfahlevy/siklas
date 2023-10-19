@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/login_screen.dart';
+import 'package:siklas/view_models/initial_name_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 
 class ClassesScreen extends StatefulWidget {
@@ -13,6 +14,15 @@ class ClassesScreen extends StatefulWidget {
 }
 
 class _ClassesScreenState extends State<ClassesScreen> {
+  @override
+  void initState() {
+    if (mounted) {
+      Provider.of<InitialNameViewModel>(context, listen: false).getInitialName();
+    }
+
+    super.initState();
+  }
+
   Future<void> _logout() async {
     final logoutViewModel = Provider.of<LogoutViewModel>(context, listen: false);
     final isSuccessLogout = await logoutViewModel.logout();
@@ -28,12 +38,16 @@ class _ClassesScreenState extends State<ClassesScreen> {
       appBar: AppBar(
         title: const Text('Daftar kelas'),
         actions: [
-          const SizedBox(
-            width: 30,
-            height: 30,
+          SizedBox(
+            width: 40,
+            height: 40,
             child: CircleAvatar(
-              backgroundColor: Colors.grey,
-              child: Text('NF'),
+              backgroundColor: Colors.purple,
+              child: Consumer<InitialNameViewModel>(
+                builder: (context, state, _) {
+                  return Text(state.initialName, style: const TextStyle(color: Colors.white),);
+                }
+              ),
             ),
           ),
           const SizedBox(width: 5,),

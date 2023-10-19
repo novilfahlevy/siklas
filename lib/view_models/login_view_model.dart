@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:siklas/models/user_model.dart';
+import 'package:siklas/repositories/user_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -30,9 +33,17 @@ class LoginViewModel extends ChangeNotifier {
           email: emailController.text,
           password: passwordController.text
         );
+        final String userId = userCredential.user!.uid;
+        
+        final UserModel? user = await UserRepository().find(userId);
+        final String userName = user!.name;
+        final String userRole = user.role;
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userId', userCredential.user!.uid);
+        await prefs.setString('userId', userId);
+        await prefs.setString('userName', userName);
+        await prefs.setString('userInitialName', user.getInitialName());
+        await prefs.setString('userRole', userRole);
 
         clearForm();
         setIsLoginSuccess(true);
