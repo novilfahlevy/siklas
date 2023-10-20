@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:siklas/models/user_model.dart';
-import 'package:siklas/repositories/user_repository.dart';
+import 'package:siklas/repositories/user_firebase_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -35,7 +34,7 @@ class LoginViewModel extends ChangeNotifier {
         );
         final String userId = userCredential.user!.uid;
         
-        final UserModel? user = await UserRepository().find(userId);
+        final UserModel? user = await UserFirebaseRepository().find(userId);
         final String userName = user!.name;
         final String userRole = user.role;
 

@@ -2,7 +2,7 @@ import 'package:siklas/models/user_model.dart';
 import 'package:siklas/repositories/interfaces/user_repository_interface.dart';
 import 'package:siklas/services/user_firebase_service.dart';
 
-class UserRepository implements UserRepositoryInterface {
+class UserFirebaseRepository implements UserRepositoryInterface {
   @override
   Future<UserModel?> find(String userId) async {
     final UserFirebaseService service = UserFirebaseService();

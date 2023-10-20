@@ -9,7 +9,7 @@ class UserFirebaseService {
         .get();
       
       return users.docs.first;
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       // TODO
       return null;
     }
