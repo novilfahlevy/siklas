@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/firebase_options.dart';
-import 'package:siklas/screens/classes_screen.dart';
+import 'package:siklas/screens/class_screen.dart';
 import 'package:siklas/screens/login_screen.dart';
+import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/splash_screen.dart';
+import 'package:siklas/view_models/classes_view_model.dart';
 import 'package:siklas/view_models/initial_name_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:siklas/view_models/main_view_model.dart';
 import 'package:siklas/view_models/splash_view_model.dart';
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +27,9 @@ void main() async {
         ChangeNotifierProvider<LoginViewModel>(create: (context) => LoginViewModel(),),
         ChangeNotifierProvider<LogoutViewModel>(create: (context) => LogoutViewModel(),),
         ChangeNotifierProvider<SplashViewModel>(create: (context) => SplashViewModel(),),
-        ChangeNotifierProvider<InitialNameViewModel>(create: (context) => InitialNameViewModel(),)
+        ChangeNotifierProvider<InitialNameViewModel>(create: (context) => InitialNameViewModel(),),
+        ChangeNotifierProvider<MainViewModel>(create: (context) => MainViewModel(),),
+        ChangeNotifierProvider<ClassesViewModel>(create: (context) => ClassesViewModel(),),
       ],
       child: const App(),
     )
@@ -37,24 +43,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Siklas',
+      theme: theme,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Poppins',
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder()
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            shape: const BeveledRectangleBorder()
-          )
-        ),
-      ),
       initialRoute: SplashScreen.routePath,
       routes: {
         SplashScreen.routePath: (context) => const SplashScreen(),
         LoginScreen.routePath: (context) => const LoginScreen(),
-        ClassesScreen.routePath: (context) => const ClassesScreen(),
+        MainScreen.routePath: (context) => const MainScreen(),
+        ClassScreen.routePath: (context) => const ClassScreen(),
       },
     );
   }

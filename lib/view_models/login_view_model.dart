@@ -8,6 +8,7 @@ class LoginViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
+  
   final TextEditingController passwordController = TextEditingController();
 
   Map<String, String> firebaseAuthExceptions = {
@@ -15,7 +16,9 @@ class LoginViewModel extends ChangeNotifier {
   };
 
   bool isPasswordObscured = true;
+
   bool isLoggingIn = false;
+
   bool _isLoginSuccess = false;
 
   String? _errorMessage;
