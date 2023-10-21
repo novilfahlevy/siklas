@@ -38,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<MainViewModel>(
-          builder: (context, state, _) => Text(state.getCurrentScreenTitle())
+          builder: (context, state, _) => Text(state.currentScreenTitle)
         ),
         actions: [
           SizedBox(
@@ -71,12 +71,12 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       body: Consumer<MainViewModel>(
-        builder: (context, state, _) => state.getCurrentScreen()
+        builder: (context, state, _) => state.currentScreen
       ),
       bottomNavigationBar: Consumer<MainViewModel>(
         builder: (context, state, _) {
           return BottomNavigationBar(
-            currentIndex: state.getSelectedScreenIndex(),
+            currentIndex: state.selectedScreenIndex,
             onTap: state.setSelectedScreenIndex,
             items: const [
               BottomNavigationBarItem(

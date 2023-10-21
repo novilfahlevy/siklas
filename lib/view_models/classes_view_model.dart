@@ -6,6 +6,7 @@ import 'package:siklas/repositories/floor_firebase_repository.dart';
 
 class ClassesViewModel extends ChangeNotifier {
   List<FloorModel> _floors = [];
+
   List<FloorModel> get floors => _floors;
 
   FloorModel? _selectedFloor;
@@ -18,6 +19,7 @@ class ClassesViewModel extends ChangeNotifier {
   FloorModel? get firstFloor => floors.isNotEmpty ? floors.first : null;
 
   List<ClassModel> _classes = [];
+  
   List<ClassModel> get classes => _classes;
 
   bool _isFetchingClasses = true;
