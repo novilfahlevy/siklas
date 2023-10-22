@@ -10,6 +10,8 @@ class ClassesViewModel extends ChangeNotifier {
   List<FloorModel> get floors => _floors;
 
   FloorModel? _selectedFloor;
+  
+  FloorModel? get selectedFloor => _selectedFloor;
 
   set selectedFloor(FloorModel? floor) {
     _selectedFloor = floor;

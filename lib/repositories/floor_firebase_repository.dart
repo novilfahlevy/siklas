@@ -17,4 +17,15 @@ class FloorFirebaseRepository implements FloorRepositoryInterface {
 
     return [];
   }
+
+  Future<FloorModel?> getFloor(String floorId) async {
+    final FloorFirebaseService service = FloorFirebaseService();
+    final floorDoc = await service.getFloor(floorId);
+
+    if (floorDoc != null) {
+      return FloorModel(floorDoc.id, floorDoc.get('name'));
+    }
+
+    return null;
+  }
 }
