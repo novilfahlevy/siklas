@@ -5,12 +5,15 @@ import 'package:siklas/screens/class_screen.dart';
 import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/splash_screen.dart';
+import 'package:siklas/view_models/borrowing_view_model.dart';
+import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/classes_view_model.dart';
 import 'package:siklas/view_models/initial_name_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:siklas/view_models/main_view_model.dart';
+import 'package:siklas/view_models/schedule_view_model.dart';
 import 'package:siklas/view_models/splash_view_model.dart';
 import 'theme.dart';
 
@@ -30,6 +33,9 @@ void main() async {
         ChangeNotifierProvider<InitialNameViewModel>(create: (context) => InitialNameViewModel(),),
         ChangeNotifierProvider<MainViewModel>(create: (context) => MainViewModel(),),
         ChangeNotifierProvider<ClassesViewModel>(create: (context) => ClassesViewModel(),),
+        ChangeNotifierProvider<ClassViewModel>(create: (context) => ClassViewModel(),),
+        ChangeNotifierProvider<ScheduleViewModel>(create: (context) => ScheduleViewModel(),),
+        ChangeNotifierProvider<BorrowingViewModel>(create: (context) => BorrowingViewModel(),),
       ],
       child: const App(),
     )

@@ -1,63 +1,133 @@
 import 'package:flutter/material.dart';
 
-const textTheme = TextTheme(
+const colorTheme = ColorScheme(
+  brightness: Brightness.light,
+  primary: Color(0xff830BCE),
+  onPrimary: Colors.white,
+  secondary: Color(0xff9586A8),
+  onSecondary: Colors.white,
+  error: Color(0xffF24E1E),
+  onError: Colors.white,
+  background: Color(0xffF6F5F5),
+  onBackground: Colors.white,
+  surface: Colors.white,
+  onSurface: Color(0xff2D0C57),
+  outline: Color(0xffD9D0E3)
+);
+
+final textTheme = TextTheme(
   headlineLarge: TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 29,
-    height: 1.24
-  ),
-  headlineMedium: TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 22,
-    height: 1.28
-  ),
-  headlineSmall: TextStyle(
     fontWeight: FontWeight.w700,
-    fontSize: 19,
-    height: 1.28
+    fontSize: 34,
+    letterSpacing: 0.41,
+    color: colorTheme.onSurface
+  ),
+  titleLarge: TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 30,
+    letterSpacing: 0.41,
+    color: colorTheme.onSurface
+  ),
+  titleMedium: TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 22,
+    letterSpacing: -0.41,
+    color: colorTheme.onSurface
+  ),
+  titleSmall: TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 18,
+    color: colorTheme.onSurface
+  ),
+  labelLarge: TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 24,
+    letterSpacing: -0.8,
+    color: colorTheme.secondary
   ),
   bodyLarge: TextStyle(
     fontWeight: FontWeight.w400,
-    fontSize: 20,
-    height: 1.44
-  ),
-  bodyMedium: TextStyle(
-    fontWeight: FontWeight.w300,
-    fontSize: 18,
-    height: 1.32,
-    wordSpacing: 20
+    fontSize: 17,
+    letterSpacing: -0.41,
+    color: colorTheme.secondary
   ),
 );
 
-const cardTheme = CardTheme(
-  shape: BeveledRectangleBorder()
-);
-
-const inputDecorationTheme = InputDecorationTheme(
-  border: OutlineInputBorder(),
-);
-
-const listTileTheme = ListTileThemeData(
-  shape: BeveledRectangleBorder(
-    side: BorderSide(
-      color: Colors.grey,
-      width: .5
-    )
+final cardTheme = CardTheme(
+  color: colorTheme.surface,
+  elevation: 0,
+  shape: RoundedRectangleBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(8)),
+    side: BorderSide(width: 0.5, color: colorTheme.outline)
   )
+);
+
+final listTileTheme = ListTileThemeData(
+  shape: RoundedRectangleBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(8)),
+    side: BorderSide(width: 0.5, color: colorTheme.outline)
+  )
+);
+
+final inputDecorationTheme = InputDecorationTheme(
+  filled: true,
+  fillColor: const Color(0xffFFFFFF),
+  labelStyle: TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    letterSpacing: -0.41,
+    color: colorTheme.secondary
+  ),
+  border: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(8)),
+    borderSide: BorderSide(width: 0.5, color: colorTheme.outline)
+  ),
+  suffixIconColor: colorTheme.secondary,
 );
 
 final elevatedButtonTheme = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
-    shape: const BeveledRectangleBorder()
+    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+    minimumSize: const Size(double.infinity, 56),
+    backgroundColor: colorTheme.primary,
+    foregroundColor: Colors.white,
+    disabledBackgroundColor: colorTheme.primary,
+    disabledForegroundColor: colorTheme.secondary,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 15,
+      letterSpacing: -0.01,
+      color: Colors.white,
+    ),
   )
+);
+
+final snackBarTheme = SnackBarThemeData(
+  backgroundColor: Colors.grey[900],
+  showCloseIcon: true,
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+  ),
+);
+
+final bottomNavigationBarTheme = BottomNavigationBarThemeData(
+  backgroundColor: const Color(0xffF8F8F8),
+  selectedItemColor: colorTheme.primary,
+  unselectedItemColor: colorTheme.secondary
 );
 
 final theme = ThemeData(
   useMaterial3: true,
   fontFamily: 'Poppins',
+  colorScheme: colorTheme,
   textTheme: textTheme,
   cardTheme: cardTheme,
-  inputDecorationTheme: inputDecorationTheme,
   listTileTheme: listTileTheme,
+  inputDecorationTheme: inputDecorationTheme,
   elevatedButtonTheme: elevatedButtonTheme,
+  snackBarTheme: snackBarTheme,
+  bottomNavigationBarTheme: bottomNavigationBarTheme,
 );

@@ -38,17 +38,24 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<MainViewModel>(
-          builder: (context, state, _) => Text(state.currentScreenTitle)
+          builder: (context, state, _) =>
+            Text(
+              state.currentScreenTitle,
+              style: Theme.of(context).textTheme.titleMedium
+            )
         ),
         actions: [
           SizedBox(
             width: 40,
             height: 40,
             child: CircleAvatar(
-              backgroundColor: Colors.purple,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               child: Consumer<InitialNameViewModel>(
                 builder: (context, state, _) {
-                  return Text(state.initialName, style: const TextStyle(color: Colors.white),);
+                  return Text(
+                    state.initialName,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)
+                  );
                 }
               ),
             ),
@@ -59,11 +66,17 @@ class _MainScreenState extends State<MainScreen> {
             icon: Consumer<LogoutViewModel>(
               builder: (context, state, _) {
                 return state.isLoggingOut
-                  ? const CircularProgressIndicator(
-                      strokeAlign: -5.0,
-                      strokeWidth: 3.0,
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     )
-                  : const Icon(Icons.logout);
+                  : Icon(
+                      Icons.logout,
+                      color: Theme.of(context).colorScheme.secondary
+                    );
               }
             )
           ),

@@ -18,7 +18,7 @@ class Tag extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(20)
+        borderRadius: BorderRadius.circular(8)
       ),
       child: Text(label, style: TextStyle(color: textColor),),
     );

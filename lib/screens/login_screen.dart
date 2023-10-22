@@ -104,9 +104,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: state.isLoggingIn ? null : state.login,
                       child: state.isLoggingIn
-                        ? const CircularProgressIndicator(
-                            strokeAlign: -6.0,
-                            strokeWidth: 3.0,
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
                           )
                         : const Text('Masuk')
                     ),
