@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
-import 'package:siklas/models/schedule_model.dart';
-import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 import 'package:siklas/repositories/class_firebase_repository.dart';
 import 'package:siklas/repositories/floor_firebase_repository.dart';
 import 'package:siklas/screens/class_borrowings_screen.dart';

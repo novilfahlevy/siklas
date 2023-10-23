@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/widgets/tag.dart';
-import 'package:siklas/view_models/borrowing_view_model.dart';
+import 'package:siklas/view_models/class_borrowing_view_model.dart';
 
 class ClassBorrowingsScreen extends StatefulWidget {
   const ClassBorrowingsScreen({super.key});
@@ -15,7 +15,7 @@ class _ClassBorrowingsScreenState extends State<ClassBorrowingsScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8,),
-      child: Consumer<BorrowingViewModel>(
+      child: Consumer<ClassBorrowingViewModel>(
         builder: (context, state, _) {
           if (state.isFetchingBorrowings) {
             return const Center(
@@ -38,19 +38,20 @@ class _ClassBorrowingsScreenState extends State<ClassBorrowingsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(state.borrowings[index].title),
+                          Text(state.borrowings[index].title,),
                           Padding(
                             padding: const EdgeInsets.only(top: 16),
                             child: Row(
                               children: [
                                 Tag(
-                                  label: state.borrowings[index].date,
+                                  label: state.borrowings[index].dateFormatted(),
                                   backgroundColor: Theme.of(context).colorScheme.secondary, textColor: Colors.white
                                 ),
                                 const SizedBox(width: 10,),
                                 Tag(
-                                  label: '${state.borrowings[index].timeFrom} - ${state.borrowings[index].timeUntil}',
+                                  label: '${state.borrowings[index].timeFromFormatted(context)} - ${state.borrowings[index].timeUntilFormatted(context)}',
                                   backgroundColor: Theme.of(context).colorScheme.secondary, textColor: Colors.white
                                 ),
                               ],

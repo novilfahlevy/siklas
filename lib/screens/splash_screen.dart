@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/classes_screen.dart';
 import 'package:siklas/screens/login_screen.dart';

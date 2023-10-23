@@ -71,7 +71,7 @@ final listTileTheme = ListTileThemeData(
 
 final inputDecorationTheme = InputDecorationTheme(
   filled: true,
-  fillColor: const Color(0xffFFFFFF),
+  fillColor: Colors.white,
   labelStyle: TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 14,
@@ -82,6 +82,11 @@ final inputDecorationTheme = InputDecorationTheme(
     borderRadius: const BorderRadius.all(Radius.circular(8)),
     borderSide: BorderSide(width: 0.5, color: colorTheme.outline)
   ),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(8)),
+    borderSide: BorderSide(width: 0.5, color: colorTheme.outline)
+  ),
+  outlineBorder: BorderSide(width: 0.5, color: colorTheme.outline),
   suffixIconColor: colorTheme.secondary,
 );
 

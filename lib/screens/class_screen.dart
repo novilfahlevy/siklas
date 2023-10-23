@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:siklas/view_models/borrowing_view_model.dart';
+import 'package:siklas/view_models/class_borrowing_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
+import 'package:siklas/view_models/create_borrowing_view_model.dart';
 import 'package:siklas/view_models/schedule_view_model.dart';
 
 class ClassScreen extends StatefulWidget {
@@ -40,13 +41,23 @@ class _ClassScreenState extends State<ClassScreen> {
   void _showBorrowingsScreenListener() {
     if (mounted) {
       final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
-      final borrowingViewModel = Provider.of<BorrowingViewModel>(context, listen: false);
+      final borrowingViewModel = Provider.of<ClassBorrowingViewModel>(context, listen: false);
 
       if (classViewModel.selectedScreenIndex == 1 && !borrowingViewModel.isBorrowingsFetched) {
         borrowingViewModel.fetchBorrowings(classViewModel.classModel!.id);
         borrowingViewModel.isBorrowingsFetched = true;
       }
     }
+  }
+
+  void _goToCreateBorrowingPage() {
+    final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
+    final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
+
+    createBorrowingViewModel.fetchMajors();
+    createBorrowingViewModel.currentClass = classViewModel.classModel;
+
+    Navigator.pushNamed(context, '/create-borrowing');
   }
 
   @override
@@ -191,7 +202,7 @@ class _ClassScreenState extends State<ClassScreen> {
         child: Consumer<ClassViewModel>(
           builder: (context, state, _) {
             return ElevatedButton(
-              onPressed: state.isFetchingClass ? null : () {},
+              onPressed: state.isFetchingClass ? null : _goToCreateBorrowingPage,
               child: const Text('Pinjam kelas ini')
             );
           }
