@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 
-class BorrowingViewModel extends ChangeNotifier {
+class ClassBorrowingViewModel extends ChangeNotifier {
   List<BorrowingModel> _borrowings = [];
 
   List<BorrowingModel> get borrowings => _borrowings;

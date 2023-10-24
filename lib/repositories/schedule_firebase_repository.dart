@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:siklas/models/schedule_model.dart';
 import 'package:siklas/repositories/interfaces/schedule_repository_interface.dart';
 import 'package:siklas/services/schedule_firebase_service.dart';

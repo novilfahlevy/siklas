@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:siklas/models/borrowing_model.dart';
-import 'package:siklas/models/schedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:siklas/repositories/interfaces/borrowing_repository_interface.dart';
 import 'package:siklas/services/borrowing_firebase_service.dart';
@@ -22,9 +21,6 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
         final majorDocRef = borrowingDoc.get('major_id');
         final majorDoc = await majorDocRef.get();
 
-        final staffDocRef = borrowingDoc.get('staff_id');
-        final staffDoc = await staffDocRef.get();
-
         final userDocRef = borrowingDoc.get('user_id');
         final userDoc = await userDocRef.get();
 
@@ -32,15 +28,13 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
           id: borrowingDoc.id,
           classId: classDoc.id,
           majorId: majorDoc.id,
-          staffId: staffDoc.id,
           userId: userDoc.id,
           title: borrowingDoc.get('title'),
           description: borrowingDoc.get('title'),
           status: borrowingDoc.get('status'),
-          date: convertDatetimeToDate(convertTimestampToDateTime(borrowingDoc.get('date'))),
-          timeFrom: convertDatetimeToTime(convertTimestampToDateTime(borrowingDoc.get('time_from'))),
-          timeUntil: convertDatetimeToTime(convertTimestampToDateTime(borrowingDoc.get('time_until'))),
-          rejectedMessage: borrowingDoc.get('rejected_message'),
+          date: (borrowingDoc.get('date') as Timestamp).toDate(),
+          timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
+          timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate())
         ));
       }
 
@@ -50,6 +44,57 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
     return [];
   }
 
+  @override
+  Future<BorrowingModel?> createBorrowing({
+    required String classId,
+    required String majorId,
+    required String userId,
+    required String title,
+    required String description,
+    required int status,
+    required DateTime date,
+    required TimeOfDay timeFrom,
+    required TimeOfDay timeUntil,
+    String? staffId,
+    String? rejectedMessage
+  }) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    final borrowing = await service.createBorrowing(
+      classId: classId,
+      majorId: majorId,
+      userId: userId,
+      staffId: staffId,
+      title: title,
+      description: description,
+      status: status,
+      date: date,
+      timeFrom: timeFrom,
+      timeUntil: timeUntil
+    );
+
+    final classDoc = await borrowing?['class_id'].get();
+    final majorDoc = await borrowing?['major_id'].get();
+    final userDoc = await borrowing?['user_id'].get();
+
+    if (borrowing != null) {
+      return BorrowingModel(
+        id: borrowing['id'],
+        classId: classDoc.id,
+        majorId: majorDoc.id,
+        userId: userDoc.id,
+        title: borrowing['title'],
+        description: borrowing['description'],
+        status: borrowing['status'],
+        date: borrowing['date'],
+        timeFrom: borrowing['time_from'],
+        timeUntil: borrowing['time_until'],
+        rejectedMessage: borrowing['rejected_message']
+      );
+    }
+
+    return null;
+  }
+  
   DateTime convertTimestampToDateTime(dynamic timestamp) {
     return (timestamp as Timestamp).toDate();
   }
