@@ -50,7 +50,7 @@ class _ClassScreenState extends State<ClassScreen> {
     }
   }
 
-  void _goToCreateBorrowingPage() {
+  void _goToCreateBorrowingScreen() {
     final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
     final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
 
@@ -202,7 +202,7 @@ class _ClassScreenState extends State<ClassScreen> {
         child: Consumer<ClassViewModel>(
           builder: (context, state, _) {
             return ElevatedButton(
-              onPressed: state.isFetchingClass ? null : _goToCreateBorrowingPage,
+              onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
               child: const Text('Pinjam kelas ini')
             );
           }

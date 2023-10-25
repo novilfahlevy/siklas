@@ -14,4 +14,14 @@ class MajorFirebaseService {
       return [];
     }
   }
+
+  Future<DocumentSnapshot?> getMajorById(String majorId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      return await db.collection('majors').doc(majorId).get();
+    } on Exception catch (_) {
+      // TODO
+      return null;
+    }
+  }
 }

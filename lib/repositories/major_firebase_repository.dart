@@ -17,4 +17,16 @@ class MajorFirebaseRepository implements MajorRepositoryInterface {
 
     return [];
   }
+
+  @override
+  Future<MajorModel?> getMajorById(String majorId) async {
+    final MajorFirebaseService service = MajorFirebaseService();
+    final majorDoc = await service.getMajorById(majorId);
+
+    if (majorDoc != null) {
+      return MajorModel(id: majorDoc.id, name: majorDoc.get('name'));
+    }
+
+    return null;
+  }
 }

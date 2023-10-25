@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/intl_standalone.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/firebase_options.dart';
 import 'package:siklas/screens/class_screen.dart';
 import 'package:siklas/screens/create_borrowing_screen.dart';
+import 'package:siklas/screens/detail_borrowing_screen.dart';
 import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/splash_screen.dart';
@@ -13,6 +13,7 @@ import 'package:siklas/view_models/class_borrowing_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/classes_view_model.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
+import 'package:siklas/view_models/detail_borrowing_view_model.dart';
 import 'package:siklas/view_models/initial_name_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/login_view_model.dart';
@@ -46,6 +47,7 @@ void main() async {
         ChangeNotifierProvider<ScheduleViewModel>(create: (context) => ScheduleViewModel(),),
         ChangeNotifierProvider<ClassBorrowingViewModel>(create: (context) => ClassBorrowingViewModel(),),
         ChangeNotifierProvider<CreateBorrowingViewModel>(create: (context) => CreateBorrowingViewModel(),),
+        ChangeNotifierProvider<DetailBorrowingViewModel>(create: (context) => DetailBorrowingViewModel(),),
       ],
       child: const App(),
     )
@@ -69,6 +71,7 @@ class App extends StatelessWidget {
         MainScreen.routePath: (context) => const MainScreen(),
         ClassScreen.routePath: (context) => const ClassScreen(),
         CreateBorrowingScreen.routePath: (context) => const CreateBorrowingScreen(),
+        DetailBorrowingScreen.routePath: (context) => const DetailBorrowingScreen(),
       },
     );
   }

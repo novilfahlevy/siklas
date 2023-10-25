@@ -20,6 +20,16 @@ class BorrowingFirebaseService {
     }
   }
 
+  Future<DocumentSnapshot?> getBorrowingById(String borrowingId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      return await db.collection('borrowings').doc(borrowingId).get();
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>?> createBorrowing({
     required String classId,
     required String majorId,
@@ -38,6 +48,8 @@ class BorrowingFirebaseService {
       final majorRef = FirebaseFirestore.instance.collection('majors').doc(majorId);
       final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
 
+      final now = Timestamp.now();
+
       final borrowing = {
         'class_id': classRef,
         'major_id': majorRef,
@@ -48,6 +60,7 @@ class BorrowingFirebaseService {
         'date': Timestamp.fromDate(date),
         'time_from': Timestamp.fromDate(DateTime(date.year, date.month, date.day, timeFrom.hour, timeFrom.minute)),
         'time_until': Timestamp.fromDate(DateTime(date.year, date.month, date.day, timeUntil.hour, timeUntil.minute)),
+        'created_at': now
       };
 
       final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -58,6 +71,7 @@ class BorrowingFirebaseService {
       borrowing['date'] = date;
       borrowing['time_from'] = timeFrom;
       borrowing['time_until'] = timeUntil;
+      borrowing['created_at'] = now.toDate();
 
       return borrowing;
     } on Exception catch (e) {
