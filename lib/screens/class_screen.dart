@@ -70,6 +70,10 @@ class _ClassScreenState extends State<ClassScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (!state.isClassFetched) {
+            return const Center(child: Text('Kelas tidak ditemukan'));
+          }
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 80),
             child: Column(
