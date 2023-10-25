@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:siklas/screens/create_borrowing_screen.dart';
 import 'package:siklas/view_models/class_borrowing_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
@@ -18,14 +19,14 @@ class _ClassScreenState extends State<ClassScreen> {
   @override
   void initState() {
     if (mounted) {
-      context.read<ClassViewModel>().addListener(_classFetchedStatusListener);
+      context.read<ClassViewModel>().addListener(_isClassFetchedListener);
       context.read<ClassViewModel>().addListener(_showBorrowingsScreenListener);
     }
 
     super.initState();
   }
 
-  void _classFetchedStatusListener() {
+  void _isClassFetchedListener() {
     if (mounted) {
       final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
 
@@ -57,7 +58,7 @@ class _ClassScreenState extends State<ClassScreen> {
     createBorrowingViewModel.fetchMajors();
     createBorrowingViewModel.currentClass = classViewModel.classModel;
 
-    Navigator.pushNamed(context, '/create-borrowing');
+    Navigator.pushNamed(context, CreateBorrowingScreen.routePath);
   }
 
   @override
@@ -68,10 +69,6 @@ class _ClassScreenState extends State<ClassScreen> {
         builder: (context, state, _) {
           if (state.isFetchingClass) {
             return const Center(child: CircularProgressIndicator());
-          }
-
-          if (!state.isClassFetched) {
-            return const Center(child: Text('Kelas tidak ditemukan'));
           }
 
           return Padding(
@@ -199,18 +196,26 @@ class _ClassScreenState extends State<ClassScreen> {
           );
         }
       ),
-      floatingActionButton: Container(
-        color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: double.infinity,
-        child: Consumer<ClassViewModel>(
-          builder: (context, state, _) {
-            return ElevatedButton(
-              onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
-              child: const Text('Pinjam kelas ini')
-            );
+      floatingActionButton: Consumer<ClassViewModel>(
+        builder: (context, state, _) {
+          if (!state.isClassFetched) {
+            return const Text('');
           }
-        ),
+
+          return Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: Consumer<ClassViewModel>(
+              builder: (context, state, _) {
+                return ElevatedButton(
+                  onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
+                  child: const Text('Pinjam kelas ini')
+                );
+              }
+            ),
+          );
+        }
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
