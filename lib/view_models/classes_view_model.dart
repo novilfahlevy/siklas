@@ -9,6 +9,8 @@ class ClassesViewModel extends ChangeNotifier {
 
   List<FloorModel> get floors => _floors;
 
+  FloorModel? get firstFloor => floors.isNotEmpty ? floors.first : null;
+
   FloorModel? _selectedFloor;
   
   FloorModel? get selectedFloor => _selectedFloor;
@@ -17,8 +19,6 @@ class ClassesViewModel extends ChangeNotifier {
     _selectedFloor = floor;
     fetchClasses();
   }
-
-  FloorModel? get firstFloor => floors.isNotEmpty ? floors.first : null;
 
   List<ClassModel> _classes = [];
   
