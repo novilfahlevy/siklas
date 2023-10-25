@@ -4,7 +4,7 @@ import 'package:siklas/services/major_firebase_service.dart';
 
 class MajorFirebaseRepository implements MajorRepositoryInterface {
   @override
-  Future<List<MajorModel>> all() async {
+  Future<List<MajorModel>> getMajors() async {
     final MajorFirebaseService service = MajorFirebaseService();
     final majorDocs = await service.getMajors();
 

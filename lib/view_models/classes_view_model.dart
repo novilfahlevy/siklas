@@ -35,7 +35,7 @@ class ClassesViewModel extends ChangeNotifier {
 
   Future<void> fetchFloors() async {
     final FloorFirebaseRepository repository = FloorFirebaseRepository();
-    _floors = await repository.all();
+    _floors = await repository.getFloors();
 
     selectedFloor = firstFloor;
   }
@@ -45,7 +45,7 @@ class ClassesViewModel extends ChangeNotifier {
       isFetchingClasses = true;
 
       final ClassFirebaseRepository repository = ClassFirebaseRepository();
-      _classes = await repository.getClasses(_selectedFloor!.id);
+      _classes = await repository.getClassesByFloorId(_selectedFloor!.id);
       
       isFetchingClasses = false;
     }

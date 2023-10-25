@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class ClassFirebaseService {
-  Future<List<QueryDocumentSnapshot>> getClasses(String floorId) async {
+  Future<List<QueryDocumentSnapshot>> getClassesByFloorId(String floorId) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       final users = await db.collection('classes')
@@ -16,7 +15,7 @@ class ClassFirebaseService {
     }
   }
 
-  Future<DocumentSnapshot?> getClass(String classId) async {
+  Future<DocumentSnapshot?> getClassById(String classId) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       final userDocRef = db.collection('classes').doc(classId);

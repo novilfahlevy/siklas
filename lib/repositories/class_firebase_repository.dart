@@ -4,9 +4,9 @@ import 'package:siklas/services/class_firebase_service.dart';
 
 class ClassFirebaseRepository implements ClassRepositoryInterface {
   @override
-  Future<List<ClassModel>> getClasses(String floorId) async {
+  Future<List<ClassModel>> getClassesByFloorId(String floorId) async {
     final ClassFirebaseService service = ClassFirebaseService();
-    final classDocs = await service.getClasses(floorId);
+    final classDocs = await service.getClassesByFloorId(floorId);
 
     if (classDocs.isNotEmpty) {
       return classDocs
@@ -24,9 +24,9 @@ class ClassFirebaseRepository implements ClassRepositoryInterface {
   }
 
   @override
-  Future<ClassModel?> getClass(String classId) async {
+  Future<ClassModel?> getClassById(String classId) async {
     final ClassFirebaseService service = ClassFirebaseService();
-    final classDoc = await service.getClass(classId);
+    final classDoc = await service.getClassById(classId);
 
     if (classDoc != null) {
       final floorDocRef = classDoc.get('floor_id');

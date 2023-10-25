@@ -27,12 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mounted) {
       final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
 
-      if (loginViewModel.getErrorMessage() != null) {
+      if (loginViewModel.errorMessage != null) {
         ScaffoldMessenger
           .of(context)
-          .showSnackBar(SnackBar(content: Text(loginViewModel.getErrorMessage()!)));
+          .showSnackBar(SnackBar(content: Text(loginViewModel.errorMessage!)));
 
-        loginViewModel.setErrorMessage(null);
+        loginViewModel.errorMessage = null;
       }
     }
   }
@@ -41,11 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mounted) {
       final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
       
-      if (loginViewModel.getIsLoginSuccess()) {
+      if (loginViewModel.isLoginSuccess) {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         Navigator.pushReplacementNamed(context, MainScreen.routePath);
       
-        loginViewModel.setIsLoginSuccess(false);
+        loginViewModel.isLoginSuccess = false;
       }
     }
   }

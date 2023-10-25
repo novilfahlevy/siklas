@@ -57,10 +57,10 @@ class ClassViewModel extends ChangeNotifier {
 
     try {
       final ClassFirebaseRepository classRepository = ClassFirebaseRepository();
-      _class = await classRepository.getClass(classId);
+      _class = await classRepository.getClassById(classId);
       
       final FloorFirebaseRepository floorRepository = FloorFirebaseRepository();
-      _floor = await floorRepository.getFloor(_class!.floorId);
+      _floor = await floorRepository.getFloorById(_class!.floorId);
     } on Exception catch (_) {
       // TODO
     } finally {
