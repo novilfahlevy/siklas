@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Datepicker extends StatefulWidget {
-  DateTime currentDate = DateTime.now();
+  final DateTime currentDate;
   final void Function(DateTime selectedDate) onDateSelected;
 
-  Datepicker({
+  const Datepicker({
     super.key,
     required this.currentDate,
     required this.onDateSelected
