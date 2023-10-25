@@ -45,12 +45,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             child: Row(
                               children: [
                                 Tag(
-                                  label: state.schedules[index].day,
+                                  label: state.schedules[index].dayFormatted(),
                                   backgroundColor: Theme.of(context).colorScheme.secondary, textColor: Colors.white
                                 ),
                                 const SizedBox(width: 10,),
                                 Tag(
-                                  label: '${state.schedules[index].timeFrom} - ${state.schedules[index].timeUntil}',
+                                  label: '${state.schedules[index].timeFromFormatted(context)} - ${state.schedules[index].timeUntilFormatted(context)}',
                                   backgroundColor: Theme.of(context).colorScheme.secondary, textColor: Colors.white
                                 ),
                               ],

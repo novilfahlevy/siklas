@@ -14,6 +14,7 @@ class BorrowingModel {
   TimeOfDay timeFrom;
   TimeOfDay timeUntil;
   String? rejectedMessage;
+  DateTime createdAt;
 
   BorrowingModel({
     required this.id,
@@ -26,12 +27,21 @@ class BorrowingModel {
     required this.date,
     required this.timeFrom,
     required this.timeUntil,
+    required this.createdAt,
     this.staffId,
     this.rejectedMessage
   });
 
   String dateFormatted() {
     return DateFormat('d MMMM y').format(date);
+  }
+
+  String createdAtFormattedDate() {
+    return DateFormat('d MMMM y').format(createdAt);
+  }
+
+  String createdAtFormattedTime() {
+    return DateFormat('HH:mm').format(createdAt);
   }
 
   String timeFromFormatted(context) {

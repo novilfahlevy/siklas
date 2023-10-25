@@ -4,13 +4,14 @@ import 'package:siklas/services/user_firebase_service.dart';
 
 class UserFirebaseRepository implements UserRepositoryInterface {
   @override
-  Future<UserModel?> find(String userId) async {
+  Future<UserModel?> getUserByAuthId(String userAuthId) async {
     final UserFirebaseService service = UserFirebaseService();
-    final userDoc = await service.getUser(userId);
+    final userDoc = await service.getUserByAuthId(userAuthId);
 
     if (userDoc != null) {
       return UserModel(
-        userId: userDoc.get('user_id'),
+        id: userDoc.id,
+        authId: userAuthId,
         name: userDoc.get('name'),
         role: userDoc.get('role')
       );

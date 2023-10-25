@@ -4,6 +4,8 @@ import 'package:siklas/models/borrowing_model.dart';
 abstract class BorrowingRepositoryInterface {
   Future<List<BorrowingModel>> getBorrowingsByClassId(String classId);
 
+  Future<BorrowingModel?> getBorrowingById(String borrowingId);
+
   Future<BorrowingModel?> createBorrowing({
     required String classId,
     required String majorId,
