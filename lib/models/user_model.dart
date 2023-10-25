@@ -1,9 +1,15 @@
 class UserModel {
-  String userId;
+  String id;
+  String authId;
   String name;
   String role;
 
-  UserModel({ required this.userId, required this.name, required this.role });
+  UserModel({
+    required this.id,
+    required this.authId,
+    required this.name,
+    required this.role,
+  });
 
   String getInitialName() {
     final userName = name.split(' ');

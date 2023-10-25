@@ -35,18 +35,18 @@ class LoginViewModel extends ChangeNotifier {
           email: emailController.text,
           password: passwordController.text
         );
-        final String userId = userCredential.user!.uid;
+        final String authId = userCredential.user!.uid;
         
-        final UserModel? user = await UserFirebaseRepository().find(userId);
+        final UserModel? user = await UserFirebaseRepository().getUserByAuthId(authId);
         final String userName = user!.name;
         final String userRole = user.role;
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userId', userId);
+        await prefs.setString('userId', user.id);
         await prefs.setString('userName', userName);
         await prefs.setString('userInitialName', user.getInitialName());
         await prefs.setString('userRole', userRole);
-
+        
         clearForm();
         setIsLoginSuccess(true);
       } on FirebaseAuthException catch (e) {
