@@ -5,7 +5,7 @@ import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 import 'package:siklas/repositories/major_firebase_repository.dart';
 
 class DetailBorrowingViewModel extends ChangeNotifier {
-  BorrowingModel? _borrowing = null;
+  BorrowingModel? _borrowing;
 
   BorrowingModel? get borrowing => _borrowing;
 
@@ -14,7 +14,7 @@ class DetailBorrowingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  MajorModel? _major = null;
+  MajorModel? _major;
 
   MajorModel? get major => _major;
 
@@ -37,16 +37,14 @@ class DetailBorrowingViewModel extends ChangeNotifier {
 
     try {
       final BorrowingFirebaseRepository borrowingRepository = BorrowingFirebaseRepository();
-      final borrowing = await borrowingRepository.getBorrowingById(borrowingId);
+      _borrowing = await borrowingRepository.getBorrowingById(borrowingId);
 
-      _borrowing = borrowing;
-
-      final MajorFirebaseRepository majorRepository = MajorFirebaseRepository();
-      final major = await majorRepository.getMajorById(_borrowing!.majorId);
-
-      _major = major;
-    } on Exception catch (_) {
-      // TODO
+      if (_borrowing != null) {
+        final MajorFirebaseRepository majorRepository = MajorFirebaseRepository();
+        _major = await majorRepository.getMajorById(_borrowing!.majorId);
+      }
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
       isFetchingBorrowing = false;
     }

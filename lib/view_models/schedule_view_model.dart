@@ -23,8 +23,8 @@ class ScheduleViewModel extends ChangeNotifier {
     try {
       final repository = ScheduleFirebaseRepository();
       _schedules = await repository.getSchedules(classId);
-    } on Exception catch (_) {
-      // TODO
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
       isFetchingSchedules = false;
     }

@@ -90,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
         builder: (context, state, _) {
           return BottomNavigationBar(
             currentIndex: state.selectedScreenIndex,
-            onTap: state.setSelectedScreenIndex,
+            onTap: (value) => state.selectedScreenIndex = value,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.door_back_door_outlined),
