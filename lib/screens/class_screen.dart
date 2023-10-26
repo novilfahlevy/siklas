@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/create_borrowing_screen.dart';
 import 'package:siklas/screens/widgets/class_thumbnail.dart';
-import 'package:siklas/view_models/class_borrowing_view_model.dart';
+import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
 import 'package:siklas/view_models/schedule_view_model.dart';
@@ -43,7 +43,7 @@ class _ClassScreenState extends State<ClassScreen> {
   void _showBorrowingsScreenListener() {
     if (mounted) {
       final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
-      final borrowingViewModel = Provider.of<ClassBorrowingViewModel>(context, listen: false);
+      final borrowingViewModel = Provider.of<BorrowingsViewModel>(context, listen: false);
 
       if (classViewModel.selectedScreenIndex == 1 && !borrowingViewModel.isBorrowingsFetched) {
         borrowingViewModel.fetchBorrowings(classViewModel.classModel!.id);

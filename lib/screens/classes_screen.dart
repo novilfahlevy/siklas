@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/screens/class_screen.dart';
-import 'package:siklas/view_models/class_borrowing_view_model.dart';
+import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/classes_view_model.dart';
 import 'package:siklas/view_models/main_view_model.dart';
@@ -32,7 +32,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
 
   void _goToClassScreen(String classId) {
     Provider.of<ClassViewModel>(context, listen: false).fetchClass(classId);
-    Provider.of<ClassBorrowingViewModel>(context, listen: false).isBorrowingsFetched = false;
+    Provider.of<BorrowingsViewModel>(context, listen: false).isBorrowingsFetched = false;
 
     Navigator.pushNamed(
       context,

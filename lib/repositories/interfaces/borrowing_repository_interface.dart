@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:siklas/models/borrowing_model.dart';
 
 abstract class BorrowingRepositoryInterface {
+  Future<BorrowingModel?> getBorrowingById(String borrowingId);
+
   Future<List<BorrowingModel>> getBorrowingsByClassId(String classId);
 
-  Future<BorrowingModel?> getBorrowingById(String borrowingId);
+  Future<List<BorrowingModel>> getBorrowingsByUserId(String userId);
 
   Future<BorrowingModel?> createBorrowing({
     required String classId,

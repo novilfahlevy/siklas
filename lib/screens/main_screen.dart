@@ -4,6 +4,7 @@ import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/view_models/initial_name_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/main_view_model.dart';
+import 'package:siklas/view_models/borrowing_histories_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   static const String routePath = '/classes';
@@ -19,9 +20,22 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     if (mounted) {
       Provider.of<InitialNameViewModel>(context, listen: false).getInitialName();
+
+      context.read<MainViewModel>().addListener(_showUserBorrowingsScreenListener);
     }
 
     super.initState();
+  }
+
+  void _showUserBorrowingsScreenListener() {
+    if (mounted) {
+      final mainViewModel = Provider.of<MainViewModel>(context, listen: false);
+      final userBorrowingsViewModel = Provider.of<BorrowingHistoriesViewModel>(context, listen: false);
+
+      if (mainViewModel.selectedScreenIndex == 1 && !userBorrowingsViewModel.isBorrowingsFetched) {
+        userBorrowingsViewModel.fetchBorrowingsByUserId();
+      }
+    }
   }
 
   Future<void> _logout() async {
