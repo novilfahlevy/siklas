@@ -28,105 +28,130 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
             return const Center(child: Text('Peminjaman tidak ditemukan'));
           }
 
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20,),
-                    Text(
-                      state.borrowingModel!.title,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 20,),
-                  ],
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20,),
+                      Text(
+                        state.borrowingModel!.title,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 20,),
+                    ],
+                  ),
                 ),
-              ),
-              ClassThumbnail(
-                classModel: state.classModel,
-                floorModel: state.floorModel
-              ),
-              const SizedBox(height: 10,),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 30,),
-                    Text('Status', style: Theme.of(context).textTheme.titleSmall,),
-                    const SizedBox(height: 10,),
-                    Tag(
-                      label: state.borrowingModel!.getStatus(),
-                      backgroundColor: state.borrowingModel!.status == 0
-                        ? Theme.of(context).colorScheme.secondary
-                        : state.borrowingModel!.status == 1
-                          ? Theme.of(context).colorScheme.error
-                          : Theme.of(context).colorScheme.primary,
-                      textColor: Colors.white
-                    ),
-                    const SizedBox(height: 30,),
-                    Text('Tanggal pengajuan', style: Theme.of(context).textTheme.titleSmall,),
-                    const SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Tag(
-                          label: state.borrowingModel!.createdAtFormattedDate(),
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white
-                        ),
-                        const SizedBox(width: 10,),
-                        Tag(
-                          label: state.borrowingModel!.createdAtFormattedTime(),
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30,),
-                    Text('Tanggal dan waktu', style: Theme.of(context).textTheme.titleSmall,),
-                    const SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Tag(
-                          label: state.borrowingModel!.dateFormatted(),
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white
-                        ),
-                        const SizedBox(width: 10,),
-                        Tag(
-                          label: '${state.borrowingModel!.timeFromFormatted(context)} - ${state.borrowingModel!.timeUntilFormatted(context)}',
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30,),
-                    Text('Program studi', style: Theme.of(context).textTheme.titleSmall,),
-                    const SizedBox(height: 10,),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Tag(
-                        label: state.majorModel!.name,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                ClassThumbnail(
+                  classModel: state.classModel,
+                  floorModel: state.floorModel
+                ),
+                const SizedBox(height: 10,),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 30,),
+                      Text('Status', style: Theme.of(context).textTheme.titleSmall,),
+                      const SizedBox(height: 10,),
+                      Tag(
+                        label: state.borrowingModel!.getStatus(),
+                        backgroundColor: state.borrowingModel!.status == 0
+                          ? Theme.of(context).colorScheme.secondary
+                          : state.borrowingModel!.status == 1
+                            ? Theme.of(context).colorScheme.error
+                            : Theme.of(context).colorScheme.primary,
                         textColor: Colors.white
                       ),
-                    ),
-                    const SizedBox(height: 30,),
-                    Text('Keterangan', style: Theme.of(context).textTheme.titleSmall,),
-                    const SizedBox(height: 10,),
-                    Text(state.borrowingModel!.description, style: Theme.of(context).textTheme.bodyLarge,),
-                    const SizedBox(height: 20,),
-                  ],
-                ),
-              )
-            ],
+                      const SizedBox(height: 30,),
+                      Text('Tanggal pengajuan', style: Theme.of(context).textTheme.titleSmall,),
+                      const SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Tag(
+                            label: state.borrowingModel!.createdAtFormattedDate(),
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            textColor: Colors.white
+                          ),
+                          const SizedBox(width: 10,),
+                          Tag(
+                            label: state.borrowingModel!.createdAtFormattedTime(),
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            textColor: Colors.white
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30,),
+                      Text('Tanggal dan waktu', style: Theme.of(context).textTheme.titleSmall,),
+                      const SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Tag(
+                            label: state.borrowingModel!.dateFormatted(),
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            textColor: Colors.white
+                          ),
+                          const SizedBox(width: 10,),
+                          Tag(
+                            label: '${state.borrowingModel!.timeFromFormatted(context)} - ${state.borrowingModel!.timeUntilFormatted(context)}',
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            textColor: Colors.white
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30,),
+                      Text('Program studi', style: Theme.of(context).textTheme.titleSmall,),
+                      const SizedBox(height: 10,),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Tag(
+                          label: state.majorModel!.name,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          textColor: Colors.white
+                        ),
+                      ),
+                      const SizedBox(height: 30,),
+                      Text('Keterangan', style: Theme.of(context).textTheme.titleSmall,),
+                      const SizedBox(height: 10,),
+                      Text(state.borrowingModel!.description, style: Theme.of(context).textTheme.bodyLarge,),
+                      const SizedBox(height: 20,),
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         }
       ),
+      floatingActionButton: Consumer<BorrowingHistoryViewModel>(
+        builder: (context, state, _) {
+          // TODO: If the class have not fetched, show the empty text
+          // if (!state.isClassFetched) {
+          //   return const Text('');
+          // }
+
+          return Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.error
+              ),
+              onPressed: () {},
+              child: const Text('Batalkan peminjaman')
+            )
+          );
+        }
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
