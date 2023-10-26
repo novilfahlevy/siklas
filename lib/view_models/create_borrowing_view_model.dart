@@ -50,6 +50,7 @@ class CreateBorrowingViewModel extends ChangeNotifier {
 
   set timeFrom(TimeOfDay timeFrom) {
     _timeFrom = timeFrom;
+    validateTime();
     notifyListeners();
   }
 
@@ -59,6 +60,7 @@ class CreateBorrowingViewModel extends ChangeNotifier {
 
   set timeUntil(TimeOfDay timeUntil) {
     _timeUntil = timeUntil;
+    validateTime();
     notifyListeners();
   }
 
@@ -138,13 +140,7 @@ class CreateBorrowingViewModel extends ChangeNotifier {
       );
 
       if (borrowing != null) {
-        titleController.clear();
-        descriptionController.clear();
-        selectedMajor = firstMajor;
-        date = DateTime.now();
-        timeFrom = TimeOfDay.now();
-        timeUntil = TimeOfDay.now();
-
+        clearForm();
         isBorrowingCreated = true;
       }
 
@@ -179,5 +175,18 @@ class CreateBorrowingViewModel extends ChangeNotifier {
     }
 
     return isTimeValid;
+  }
+
+  void clearForm() {
+    titleController.clear();
+    descriptionController.clear();
+
+    selectedMajor = firstMajor;
+
+    date = DateTime.now();
+    timeFrom = TimeOfDay.now();
+    timeUntil = TimeOfDay.now();
+    
+    isTimeValid = true;
   }
 }
