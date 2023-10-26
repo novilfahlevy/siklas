@@ -7,9 +7,9 @@ class Timepicker extends StatefulWidget {
 
   final void Function(TimeOfDay selectedTime) onTimeSelected;
   
-  bool isError;
+  final bool isError;
 
-  Timepicker({
+  const Timepicker({
     super.key,
     required this.label,
     required this.currentTime,

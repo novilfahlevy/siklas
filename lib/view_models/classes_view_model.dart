@@ -9,6 +9,8 @@ class ClassesViewModel extends ChangeNotifier {
 
   List<FloorModel> get floors => _floors;
 
+  FloorModel? get firstFloor => floors.isNotEmpty ? floors.first : null;
+
   FloorModel? _selectedFloor;
   
   FloorModel? get selectedFloor => _selectedFloor;
@@ -17,8 +19,6 @@ class ClassesViewModel extends ChangeNotifier {
     _selectedFloor = floor;
     fetchClasses();
   }
-
-  FloorModel? get firstFloor => floors.isNotEmpty ? floors.first : null;
 
   List<ClassModel> _classes = [];
   
@@ -35,7 +35,7 @@ class ClassesViewModel extends ChangeNotifier {
 
   Future<void> fetchFloors() async {
     final FloorFirebaseRepository repository = FloorFirebaseRepository();
-    _floors = await repository.all();
+    _floors = await repository.getFloors();
 
     selectedFloor = firstFloor;
   }
@@ -45,7 +45,7 @@ class ClassesViewModel extends ChangeNotifier {
       isFetchingClasses = true;
 
       final ClassFirebaseRepository repository = ClassFirebaseRepository();
-      _classes = await repository.getClasses(_selectedFloor!.id);
+      _classes = await repository.getClassesByFloorId(_selectedFloor!.id);
       
       isFetchingClasses = false;
     }

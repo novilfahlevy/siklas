@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:siklas/screens/create_borrowing_screen.dart';
+import 'package:siklas/screens/widgets/class_thumbnail.dart';
 import 'package:siklas/view_models/class_borrowing_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
@@ -18,14 +20,14 @@ class _ClassScreenState extends State<ClassScreen> {
   @override
   void initState() {
     if (mounted) {
-      context.read<ClassViewModel>().addListener(_classFetchedStatusListener);
+      context.read<ClassViewModel>().addListener(_isClassFetchedListener);
       context.read<ClassViewModel>().addListener(_showBorrowingsScreenListener);
     }
 
     super.initState();
   }
 
-  void _classFetchedStatusListener() {
+  void _isClassFetchedListener() {
     if (mounted) {
       final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
 
@@ -57,7 +59,7 @@ class _ClassScreenState extends State<ClassScreen> {
     createBorrowingViewModel.fetchMajors();
     createBorrowingViewModel.currentClass = classViewModel.classModel;
 
-    Navigator.pushNamed(context, '/create-borrowing');
+    Navigator.pushNamed(context, CreateBorrowingScreen.routePath);
   }
 
   @override
@@ -70,58 +72,22 @@ class _ClassScreenState extends State<ClassScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          // TODO: If the class have not fetched, show the empty text
+          // if (!state.isClassFetched) {
+          //   return const Text('');
+          // }
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 80),
             child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-                          width: 180,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 20,),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Consumer<ClassViewModel>(
-                              builder: (context, state, _) {
-                                if (state.classModel != null) {
-                                  return Text(
-                                    state.classModel!.name,
-                                    style: Theme.of(context).textTheme.titleSmall,
-                                    overflow: TextOverflow.ellipsis,
-                                  );
-                                }
-
-                                return const Text('-');
-                              }
-                            ),
-                            Consumer<ClassViewModel>(
-                              builder: (context, state, _) {
-                                if (state.floorModel != null) {
-                                  return Text(
-                                    state.floorModel!.name,
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                  );
-                                }
-
-                                return const Text('-');
-                              }
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                Consumer<ClassViewModel>(
+                  builder: (context, state, _) {
+                    return ClassThumbnail(
+                      classModel: state.classModel,
+                      floorModel: state.floorModel
+                    );
+                  }
                 ),
                 Consumer<ClassViewModel>(
                   builder: (context, state, _) {
@@ -195,18 +161,27 @@ class _ClassScreenState extends State<ClassScreen> {
           );
         }
       ),
-      floatingActionButton: Container(
-        color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: double.infinity,
-        child: Consumer<ClassViewModel>(
-          builder: (context, state, _) {
-            return ElevatedButton(
-              onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
-              child: const Text('Pinjam kelas ini')
-            );
-          }
-        ),
+      floatingActionButton: Consumer<ClassViewModel>(
+        builder: (context, state, _) {
+          // TODO: If the class have not fetched, show the empty text
+          // if (!state.isClassFetched) {
+          //   return const Text('');
+          // }
+
+          return Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: Consumer<ClassViewModel>(
+              builder: (context, state, _) {
+                return ElevatedButton(
+                  onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
+                  child: const Text('Pinjam kelas ini')
+                );
+              }
+            ),
+          );
+        }
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

@@ -103,7 +103,7 @@ class CreateBorrowingViewModel extends ChangeNotifier {
 
     try {
       final MajorFirebaseRepository repository = MajorFirebaseRepository();
-      _majors = await repository.all();
+      _majors = await repository.getMajors();
       
       selectedMajor = firstMajor;
     } on Exception catch (_) {

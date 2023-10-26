@@ -15,7 +15,7 @@ class FloorFirebaseService {
     }
   }
 
-  Future<DocumentSnapshot?> getFloor(String floorId) async {
+  Future<DocumentSnapshot?> getFloorById(String floorId) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       final floorDocRef = await db.collection('floors').doc(floorId);

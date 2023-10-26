@@ -22,14 +22,14 @@ class ClassViewModel extends ChangeNotifier {
 
   int _selectedScreenIndex = 0;
 
-  Widget get currentScreen => _screens[_selectedScreenIndex];
-
   int get selectedScreenIndex => _selectedScreenIndex;
 
   set selectedScreenIndex(int index) {
     _selectedScreenIndex = index;
     notifyListeners();
   }
+
+  Widget get currentScreen => _screens[_selectedScreenIndex];
 
   bool _isFetchingClass = true;
 
@@ -57,14 +57,17 @@ class ClassViewModel extends ChangeNotifier {
 
     try {
       final ClassFirebaseRepository classRepository = ClassFirebaseRepository();
-      _class = await classRepository.getClass(classId);
-      
-      final FloorFirebaseRepository floorRepository = FloorFirebaseRepository();
-      _floor = await floorRepository.getFloor(_class!.floorId);
-    } on Exception catch (_) {
-      // TODO
+      _class = await classRepository.getClassById(classId);
+
+      if (_class != null) {
+        final FloorFirebaseRepository floorRepository = FloorFirebaseRepository();
+        _floor = await floorRepository.getFloorById(_class!.floorId);
+
+        isClassFetched = true;
+      }
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
-      isClassFetched = true;
       isFetchingClass = false;
     }
   }

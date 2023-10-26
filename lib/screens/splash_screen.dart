@@ -17,13 +17,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Provider.of<SplashViewModel>(context, listen: false)
-      .isUserLoggedIn()
-      .then(_redirectAfterLoginCheck);
+      .checkIsUserLoggedIn()
+      .then(_redirectBasedOnRole);
     
     super.initState();
   }
 
-  void _redirectAfterLoginCheck(String? uid) {
+  void _redirectBasedOnRole(String? uid) {
     Navigator.pushReplacementNamed(
       context,
       (uid == null) ? LoginScreen.routePath : ClassesScreen.routePath

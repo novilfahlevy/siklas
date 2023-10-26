@@ -11,78 +11,101 @@ class LoginViewModel extends ChangeNotifier {
   
   final TextEditingController passwordController = TextEditingController();
 
+  bool _isPasswordObscured = true;
+
+  bool get isPasswordObscured => _isPasswordObscured;
+
+  set isPasswordObscured(bool isObscured) {
+    _isPasswordObscured = isObscured;
+    notifyListeners();
+  }
+
+  void togglePasswordObscure() => isPasswordObscured = !isPasswordObscured;
+
+  bool _isLoggingIn = false;
+
+  bool get isLoggingIn => _isLoggingIn;
+
+  set isLoggingIn(bool isLoggingIn) {
+    _isLoggingIn = isLoggingIn;
+    notifyListeners();
+  }
+
+  bool _isLoginSuccess = false;
+
+  bool get isLoginSuccess => _isLoginSuccess;
+
+  set isLoginSuccess(bool isLoginSuccess) {
+    _isLoginSuccess = isLoginSuccess;
+    notifyListeners();
+  }
+
   Map<String, String> firebaseAuthExceptions = {
     'INVALID_LOGIN_CREDENTIALS': 'Akun dengan email dan password tersebut tidak ditemukan.',
   };
 
-  bool isPasswordObscured = true;
-
-  bool isLoggingIn = false;
-
-  bool _isLoginSuccess = false;
-
   String? _errorMessage;
+
+  String? get errorMessage => _errorMessage;
+
+  set errorMessage(String? errorMessage) {
+    _errorMessage = errorMessage;
+    notifyListeners();
+  }
 
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
       try {
+        isLoginSuccess = false;
         isLoggingIn = true;
-        setErrorMessage(null);
-        
-        notifyListeners();
+        errorMessage = null;
 
         final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text
         );
-        final String authId = userCredential.user!.uid;
-        
-        final UserModel? user = await UserFirebaseRepository().getUserByAuthId(authId);
-        final String userName = user!.name;
-        final String userRole = user.role;
 
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userId', user.id);
-        await prefs.setString('userName', userName);
-        await prefs.setString('userInitialName', user.getInitialName());
-        await prefs.setString('userRole', userRole);
-        
-        clearForm();
-        setIsLoginSuccess(true);
+        final String authId = userCredential.user!.uid;
+        final UserModel? user = await UserFirebaseRepository().getUserByAuthId(authId);
+
+        if (user != null) {
+          await setUserData(
+            userId: user.id,
+            userName: user.name,
+            userInitialName: user.getInitialName(),
+            userRole: user.role
+          );
+          
+          isLoginSuccess = true;
+
+          clearForm();
+        } else {
+          errorMessage = 'Telah terjadi kesalahan, silakan coba lagi.';
+          isLoginSuccess = false;
+        }
       } on FirebaseAuthException catch (e) {
         if (firebaseAuthExceptions.containsKey(e.code)) {
-          setErrorMessage(firebaseAuthExceptions[e.code]);
+          errorMessage = firebaseAuthExceptions[e.code];
         } else {
-          setErrorMessage(e.message);
+          errorMessage = e.message;
         }
       } finally {
         isLoggingIn = false;
-        notifyListeners();
       }
     }
   }
 
-  void togglePasswordObscure() {
-    isPasswordObscured = !isPasswordObscured;
-    notifyListeners();
-  }
-
-  String? getErrorMessage() {
-    return _errorMessage;
-  }
-
-  void setErrorMessage(String? message) {
-    _errorMessage = message;
-    notifyListeners();
-  }
-
-  bool getIsLoginSuccess() {
-    return _isLoginSuccess;
-  }
-
-  void setIsLoginSuccess(bool isLoginSuccess) {
-    _isLoginSuccess = isLoginSuccess;
-    notifyListeners();
+  Future<void> setUserData({
+    required String userId,
+    required String userName,
+    required String userInitialName,
+    required String userRole,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userId);
+    await prefs.setString('userName', userName);
+    await prefs.setString('userInitialName', userInitialName);
+    await prefs.setString('userRole', userRole);
   }
 
   String? validateEmail(String? value) {
@@ -113,5 +136,7 @@ class LoginViewModel extends ChangeNotifier {
   void clearForm() {
     emailController.clear();
     passwordController.clear();
+
+    isPasswordObscured = true;
   }
 }

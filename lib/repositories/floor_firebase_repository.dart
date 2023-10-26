@@ -4,7 +4,7 @@ import 'package:siklas/services/floor_firebase_service.dart';
 
 class FloorFirebaseRepository implements FloorRepositoryInterface {
   @override
-  Future<List<FloorModel>> all() async {
+  Future<List<FloorModel>> getFloors() async {
     final FloorFirebaseService service = FloorFirebaseService();
     final floorDocs = await service.getFloors();
 
@@ -18,9 +18,10 @@ class FloorFirebaseRepository implements FloorRepositoryInterface {
     return [];
   }
 
-  Future<FloorModel?> getFloor(String floorId) async {
+  @override
+  Future<FloorModel?> getFloorById(String floorId) async {
     final FloorFirebaseService service = FloorFirebaseService();
-    final floorDoc = await service.getFloor(floorId);
+    final floorDoc = await service.getFloorById(floorId);
 
     if (floorDoc != null) {
       return FloorModel(floorDoc.id, floorDoc.get('name'));
