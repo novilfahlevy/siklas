@@ -7,24 +7,26 @@ class ClassThumbnail extends StatelessWidget {
 
   final FloorModel? floorModel;
 
+  final double thumbnailSize;
+
   const ClassThumbnail({
     super.key,
     required this.classModel,
     required this.floorModel,
+    this.thumbnailSize = 150
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      color: Colors.white,
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(
               'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-              width: 180,
+              width: thumbnailSize,
               fit: BoxFit.cover,
             ),
           ),

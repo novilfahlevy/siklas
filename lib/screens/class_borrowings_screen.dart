@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:siklas/screens/detail_borrowing_screen.dart';
+import 'package:siklas/screens/borrowing_screen.dart';
 import 'package:siklas/screens/widgets/tag.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
-import 'package:siklas/view_models/detail_borrowing_view_model.dart';
+import 'package:siklas/view_models/borrowing_view_model.dart';
 
 class ClassBorrowingsScreen extends StatefulWidget {
   const ClassBorrowingsScreen({super.key});
@@ -15,10 +15,10 @@ class ClassBorrowingsScreen extends StatefulWidget {
 class _ClassBorrowingsScreenState extends State<ClassBorrowingsScreen> {
   void _goToDetailBorrowingScreen(String borrowingId) {
     Provider
-      .of<DetailBorrowingViewModel>(context, listen: false)
+      .of<BorrowingViewModel>(context, listen: false)
       .fetchBorrowingById(borrowingId);
 
-    Navigator.pushNamed(context, DetailBorrowingScreen.routePath);
+    Navigator.pushNamed(context, BorrowingScreen.routePath);
   }
 
   @override

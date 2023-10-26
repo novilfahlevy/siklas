@@ -4,7 +4,7 @@ import 'package:siklas/models/major_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 import 'package:siklas/repositories/major_firebase_repository.dart';
 
-class DetailBorrowingViewModel extends ChangeNotifier {
+class BorrowingViewModel extends ChangeNotifier {
   BorrowingModel? _borrowing;
 
   BorrowingModel? get borrowing => _borrowing;

@@ -72,22 +72,20 @@ class _ClassScreenState extends State<ClassScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // TODO: If the class have not fetched, show the empty text
-          // if (!state.isClassFetched) {
-          //   return const Text('');
-          // }
-
           return Padding(
             padding: const EdgeInsets.only(bottom: 80),
             child: Column(
               children: [
-                Consumer<ClassViewModel>(
-                  builder: (context, state, _) {
-                    return ClassThumbnail(
-                      classModel: state.classModel,
-                      floorModel: state.floorModel
-                    );
-                  }
+                Container(
+                  color: Colors.white,
+                  child: Consumer<ClassViewModel>(
+                    builder: (context, state, _) {
+                      return ClassThumbnail(
+                        classModel: state.classModel,
+                        floorModel: state.floorModel
+                      );
+                    }
+                  )
                 ),
                 Consumer<ClassViewModel>(
                   builder: (context, state, _) {
@@ -163,23 +161,13 @@ class _ClassScreenState extends State<ClassScreen> {
       ),
       floatingActionButton: Consumer<ClassViewModel>(
         builder: (context, state, _) {
-          // TODO: If the class have not fetched, show the empty text
-          // if (!state.isClassFetched) {
-          //   return const Text('');
-          // }
-
           return Container(
-            color: Colors.transparent,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: double.infinity,
-            child: Consumer<ClassViewModel>(
-              builder: (context, state, _) {
-                return ElevatedButton(
-                  onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
-                  child: const Text('Pinjam kelas ini')
-                );
-              }
-            ),
+            child: ElevatedButton(
+              onPressed: state.isFetchingClass ? null : _goToCreateBorrowingScreen,
+              child: const Text('Pinjam kelas ini')
+            )
           );
         }
       ),
