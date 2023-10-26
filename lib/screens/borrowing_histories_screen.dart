@@ -33,6 +33,15 @@ class _BorrowingHistoriesScreenState extends State<BorrowingHistoriesScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (state.borrowings.isEmpty) {
+            return Center(
+              child: Text(
+                'Tidak ada peminjaman',
+                style: Theme.of(context).textTheme.bodyLarge
+              )
+            );
+          }
+
           return ListView.builder(
             itemCount: state.borrowings.length,
             itemBuilder: (context, index) =>

@@ -21,4 +21,6 @@ abstract class BorrowingRepositoryInterface {
     String? staffId,
     String? rejectedMessage
   });
+
+  Future<bool> cancelBorrowingById(String borrowingId);
 }

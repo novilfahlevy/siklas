@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:siklas/models/borrowing_model.dart';
-import 'package:intl/intl.dart';
 import 'package:siklas/repositories/interfaces/borrowing_repository_interface.dart';
 import 'package:siklas/services/borrowing_firebase_service.dart';
 
@@ -169,15 +168,9 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
     return null;
   }
   
-  DateTime convertTimestampToDateTime(dynamic timestamp) {
-    return (timestamp as Timestamp).toDate();
-  }
-
-  String convertDatetimeToDate(DateTime date) {
-    return DateFormat('d MMMM y').format(date);
-  }
-
-  String convertDatetimeToTime(DateTime date) {
-    return DateFormat('Hm').format(date);
+  @override
+  Future<bool> cancelBorrowingById(String borrowingId) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    return await service.cancelBorrowingById(borrowingId);
   }
 }

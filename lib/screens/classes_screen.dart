@@ -93,44 +93,45 @@ class _ClassesScreenState extends State<ClassesScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                if (state.classes.isNotEmpty) {
-                    return ListView(
-                      shrinkWrap: true,
-                      children: state.classes.map((ClassModel classModel) {
-                        return GestureDetector(
-                          onTap: () => _goToClassScreen(classModel.id),
-                          child: Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8)
-                                  ),
-                                  child: Image.network(
-                                    'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                                  child: Text(classModel.name, style: Theme.of(context).textTheme.titleSmall,),
-                                )
-                              ],
-                            )
-                          ),
-                        );
-                      })
-                      .toList()
-                    );
-                  }
-
+                if (state.classes.isEmpty) {
                   return Center(
                     child: Text(
                       'Tidak ada kelas yang tersedia',
-                      style: Theme.of(context).textTheme.bodyLarge)
+                      style: Theme.of(context).textTheme.bodyLarge
+                    )
                   );
+                }
+                
+                return ListView(
+                  shrinkWrap: true,
+                  children: state.classes.map((ClassModel classModel) {
+                    return GestureDetector(
+                      onTap: () => _goToClassScreen(classModel.id),
+                      child: Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8)
+                              ),
+                              child: Image.network(
+                                'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                              child: Text(classModel.name, style: Theme.of(context).textTheme.titleSmall,),
+                            )
+                          ],
+                        )
+                      ),
+                    );
+                  })
+                  .toList()
+                );
               }
             ),
           ),

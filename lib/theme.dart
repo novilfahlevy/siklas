@@ -110,6 +110,15 @@ final elevatedButtonTheme = ElevatedButtonThemeData(
   )
 );
 
+final dialogTheme = DialogTheme(
+  backgroundColor: colorTheme.surface,
+  elevation: 0,
+  shape: RoundedRectangleBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(8)),
+    side: BorderSide(width: 0.5, color: colorTheme.outline)
+  )
+);
+
 final snackBarTheme = SnackBarThemeData(
   backgroundColor: Colors.grey[900],
   showCloseIcon: true,
@@ -133,6 +142,7 @@ final theme = ThemeData(
   listTileTheme: listTileTheme,
   inputDecorationTheme: inputDecorationTheme,
   elevatedButtonTheme: elevatedButtonTheme,
+  dialogTheme: dialogTheme,
   snackBarTheme: snackBarTheme,
   bottomNavigationBarTheme: bottomNavigationBarTheme,
 );

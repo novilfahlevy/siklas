@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/widgets/class_thumbnail.dart';
 import 'package:siklas/screens/widgets/tag.dart';
+import 'package:siklas/view_models/borrowing_histories_view_model.dart';
 import 'package:siklas/view_models/borrowing_history_view_model.dart';
 
 class BorrowingHistoryScreen extends StatefulWidget {
@@ -14,6 +15,57 @@ class BorrowingHistoryScreen extends StatefulWidget {
 }
 
 class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
+  void _confirmCancelBorrowing() async {
+    await showDialog(
+      context: context,
+      builder: (context) =>
+        AlertDialog(
+          title: Center(
+            child: Text(
+              'Konfirmasi pembatalan?',
+              style: Theme.of(context).textTheme.bodyLarge
+            ),
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Tidak jadi', style: Theme.of(context).textTheme.bodyMedium,)
+            ),
+            TextButton(
+              onPressed: () => _cancelBorrowing(),
+              child: Text('Iya', style: Theme.of(context).textTheme.bodyMedium,)
+            ),
+          ],
+        ),
+    );
+  }
+
+  void _cancelBorrowing() {
+    // Pop the alert dialog
+    Navigator.pop(context);
+    
+    Provider
+      .of<BorrowingHistoryViewModel>(context, listen: false)
+      .cancelBorrowing()
+      .then((value) {
+        _showCancelBorrowingSuccessMessage();
+
+        // Back to borrowing histories screen
+        Navigator.pop(context);
+        
+        Provider
+          .of<BorrowingHistoriesViewModel>(context, listen: false)
+          .fetchBorrowingsByUserId();
+      });
+  }
+
+  void _showCancelBorrowingSuccessMessage() {
+    ScaffoldMessenger
+      .of(context)
+      .showSnackBar(const SnackBar(content: Text('Peminjaman berhasil dibatalkan.')));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,21 +184,29 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
       ),
       floatingActionButton: Consumer<BorrowingHistoryViewModel>(
         builder: (context, state, _) {
-          // TODO: If the class have not fetched, show the empty text
-          // if (!state.isClassFetched) {
-          //   return const Text('');
-          // }
+          if (state.isFetchingBorrowing) {
+            return const Text('');
+          }
 
-          return Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+          return SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error
+                ),
+                onPressed: _confirmCancelBorrowing,
+                child: state.isDeletingBorrowing
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    )
+                  : const Text('Batalkan peminjaman')
               ),
-              onPressed: () {},
-              child: const Text('Batalkan peminjaman')
             )
           );
         }

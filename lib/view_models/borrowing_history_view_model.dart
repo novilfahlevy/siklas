@@ -54,6 +54,15 @@ class BorrowingHistoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isDeletingBorrowing = false;
+
+  bool get isDeletingBorrowing => _isDeletingBorrowing;
+
+  set isDeletingBorrowing(bool isDeleting) {
+    _isDeletingBorrowing = isDeleting;
+    notifyListeners();
+  }
+
   Future<void> fetchBorrowingById(String borrowingId) async {
     isFetchingBorrowing = true;
 
@@ -71,6 +80,19 @@ class BorrowingHistoryViewModel extends ChangeNotifier {
       debugPrint(e.toString());
     } finally {
       isFetchingBorrowing = false;
+    }
+  }
+
+  Future<void> cancelBorrowing() async {
+    isDeletingBorrowing = true;
+
+    try {
+      final BorrowingFirebaseRepository borrowingRepository = BorrowingFirebaseRepository();
+      await borrowingRepository.cancelBorrowingById(_borrowingModel!.id);
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      isDeletingBorrowing = false;
     }
   }
 }

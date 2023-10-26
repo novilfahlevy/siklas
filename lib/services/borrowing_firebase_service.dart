@@ -95,4 +95,19 @@ class BorrowingFirebaseService {
       return null;
     }
   }
+
+  Future<bool> cancelBorrowingById(String borrowingId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      
+      await db.collection('borrowings')
+        .doc(borrowingId)
+        .delete();
+      
+      return true;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
 }
