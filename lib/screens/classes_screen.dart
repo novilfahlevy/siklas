@@ -1,7 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/screens/class_screen.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
