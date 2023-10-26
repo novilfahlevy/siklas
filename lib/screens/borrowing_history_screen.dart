@@ -57,6 +57,18 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 30,),
+                    Text('Status', style: Theme.of(context).textTheme.titleSmall,),
+                    const SizedBox(height: 10,),
+                    Tag(
+                      label: state.borrowingModel!.getStatus(),
+                      backgroundColor: state.borrowingModel!.status == 0
+                        ? Theme.of(context).colorScheme.secondary
+                        : state.borrowingModel!.status == 1
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.primary,
+                      textColor: Colors.white
+                    ),
+                    const SizedBox(height: 30,),
                     Text('Tanggal pengajuan', style: Theme.of(context).textTheme.titleSmall,),
                     const SizedBox(height: 10,),
                     Row(
