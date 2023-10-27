@@ -108,36 +108,41 @@ class _ClassesScreenState extends State<ClassesScreen> {
                   itemBuilder: (context, index) =>
                     GestureDetector(
                       onTap: () => _goToClassScreen(state.classes[index].id),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-                              fit: BoxFit.cover,
-                              height: 200,
-                              width: double.infinity,
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.black26,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Text(
-                              state.classes[index].name,
-                              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                color: Colors.white,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
+                                  fit: BoxFit.cover,
+                                  height: 200,
+                                  width: double.infinity,
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: double.infinity,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.black26,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text(
+                                  state.classes[index].name,
+                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                 );

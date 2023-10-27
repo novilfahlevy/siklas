@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/reject_borrowing_screen.dart';
 import 'package:siklas/screens/widgets/class_thumbnail.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/screens/widgets/tag.dart';
 import 'package:siklas/view_models/reject_borrowing_view_model.dart';
 import 'package:siklas/view_models/staff_borrowing_view_model.dart';
@@ -224,13 +225,7 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
                       ),
                       onPressed: state.isFetchingBorrowing ? null : _confirmAcceptBorrowing,
                       child: state.isAcceptingBorrowing
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.surface,
-                            ),
-                          )
+                        ? const LoadingCircular()
                         : const Text('Setujui')
                     ),
                   ),

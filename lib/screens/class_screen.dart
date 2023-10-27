@@ -72,90 +72,88 @@ class _ClassScreenState extends State<ClassScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 80),
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: Consumer<ClassViewModel>(
-                    builder: (context, state, _) {
-                      return ClassThumbnail(
-                        classModel: state.classModel,
-                        floorModel: state.floorModel
-                      );
-                    }
-                  )
-                ),
-                Consumer<ClassViewModel>(
+          return Column(
+            children: [
+              Container(
+                color: Colors.white,
+                child: Consumer<ClassViewModel>(
                   builder: (context, state, _) {
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => state.selectedScreenIndex = 0,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border(
-                                  top: BorderSide(
-                                    width: 0.5,
-                                    color: Theme.of(context).colorScheme.outline
-                                  ),
-                                  bottom: state.selectedScreenIndex == 0
-                                    ? BorderSide(
-                                        color: Theme.of(context).colorScheme.primary,
-                                        width: 2
-                                      )
-                                    : BorderSide(
-                                        width: 0.5,
-                                        color: Theme.of(context).colorScheme.outline
-                                      )
-                                )
-                              ),
-                              child: const Center(child: Text('Jadwal'))
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => state.selectedScreenIndex = 1,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                              color: Colors.white,
-                                border: Border(
-                                  top: BorderSide(
-                                    width: 0.5,
-                                    color: Theme.of(context).colorScheme.outline
-                                  ),
-                                  bottom: state.selectedScreenIndex == 1
-                                    ? BorderSide(
-                                        color: Theme.of(context).colorScheme.primary,
-                                        width: 2
-                                      )
-                                    : BorderSide(
-                                        width: 0.5,
-                                        color: Theme.of(context).colorScheme.outline
-                                      )
-                                )
-                              ),
-                              child: const Center(child: Text('Peminjaman'))
-                            ),
-                          ),
-                        ),
-                      ],
+                    return ClassThumbnail(
+                      classModel: state.classModel,
+                      floorModel: state.floorModel
                     );
                   }
-                ),
-                Expanded(
-                  child: Consumer<ClassViewModel>(
-                    builder: (context, state, _) => state.currentScreen,
-                  ),
                 )
-              ],
-            ),
+              ),
+              Consumer<ClassViewModel>(
+                builder: (context, state, _) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => state.selectedScreenIndex = 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                top: BorderSide(
+                                  width: 0.5,
+                                  color: Theme.of(context).colorScheme.outline
+                                ),
+                                bottom: state.selectedScreenIndex == 0
+                                  ? BorderSide(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      width: 2
+                                    )
+                                  : BorderSide(
+                                      width: 0.5,
+                                      color: Theme.of(context).colorScheme.outline
+                                    )
+                              )
+                            ),
+                            child: const Center(child: Text('Jadwal'))
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => state.selectedScreenIndex = 1,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                            color: Colors.white,
+                              border: Border(
+                                top: BorderSide(
+                                  width: 0.5,
+                                  color: Theme.of(context).colorScheme.outline
+                                ),
+                                bottom: state.selectedScreenIndex == 1
+                                  ? BorderSide(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      width: 2
+                                    )
+                                  : BorderSide(
+                                      width: 0.5,
+                                      color: Theme.of(context).colorScheme.outline
+                                    )
+                              )
+                            ),
+                            child: const Center(child: Text('Peminjaman'))
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              ),
+              Expanded(
+                child: Consumer<ClassViewModel>(
+                  builder: (context, state, _) => state.currentScreen,
+                ),
+              ),
+              const SizedBox(height: 80,)
+            ],
           );
         }
       ),

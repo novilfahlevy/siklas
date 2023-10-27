@@ -74,7 +74,7 @@ class StaffBorrowingViewModel extends ChangeNotifier {
     }
   }
 
-  bool _isAcceptingBorrowing = true;
+  bool _isAcceptingBorrowing = false;
 
   bool get isAcceptingBorrowing => _isAcceptingBorrowing;
 

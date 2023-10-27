@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/models/major_model.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/screens/widgets/timepicker.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
@@ -183,13 +184,7 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
                   ElevatedButton(
                     onPressed: state.isSubmittingBorrowing ? null : state.submitBorrowing,
                     child: state.isSubmittingBorrowing
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        )
+                      ? const LoadingCircular()
                       : const Text('Ajukan peminjaman')
                   ),
                   const SizedBox(height: 20,),

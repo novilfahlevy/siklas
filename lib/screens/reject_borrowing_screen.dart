@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/view_models/reject_borrowing_view_model.dart';
 import 'package:siklas/view_models/staff_borrowing_view_model.dart';
 
@@ -73,13 +74,7 @@ class _RejectBorrowingScreenState extends State<RejectBorrowingScreen> {
                     ),
                     onPressed: state.isSubmittingMessage ? null : state.submitMessage,
                     child: state.isSubmittingMessage
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        )
+                      ? const LoadingCircular()
                       : const Text('Tolak peminjaman')
                   ),
                 ],

@@ -16,8 +16,16 @@ class LogoutViewModel extends ChangeNotifier {
     
     final prefs = await SharedPreferences.getInstance();
 
-    if (prefs.getString('userId') != null || prefs.getString('userId') != '') {
+    String? authId = prefs.getString('authId');
+    String? userId = prefs.getString('userId');
+    String? userName = prefs.getString('userName');
+    String? userRole = prefs.getString('userRole');
+
+    if (authId != null && userId != null && userName != null && userRole != null) {
+      await prefs.remove('authId');
       await prefs.remove('userId');
+      await prefs.remove('userName');
+      await prefs.remove('userRole');
 
       isLoggingOut = false;
       return true;
