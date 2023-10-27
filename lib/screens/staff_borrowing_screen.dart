@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/widgets/class_thumbnail.dart';
 import 'package:siklas/screens/widgets/tag.dart';
-import 'package:siklas/view_models/borrowing_histories_view_model.dart';
-import 'package:siklas/view_models/borrowing_history_view_model.dart';
 import 'package:siklas/view_models/staff_borrowing_view_model.dart';
 
 class StaffBorrowingScreen extends StatefulWidget {
