@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:siklas/models/class_model.dart';
+import 'package:siklas/repositories/class_firebase_repository.dart';
 
 class BorrowingModel {
   String id;
@@ -31,6 +33,15 @@ class BorrowingModel {
     this.staffId,
     this.rejectedMessage
   });
+
+  Future<ClassModel?> getClassModel() async {
+    ClassFirebaseRepository repository = ClassFirebaseRepository();
+    final classModel = await repository.getClassById(classId);
+
+    if (classModel != null) return classModel;
+
+    return null;
+  }
 
   String getStatus() {
     if (status == 0) return 'Menunggu persetujuan';

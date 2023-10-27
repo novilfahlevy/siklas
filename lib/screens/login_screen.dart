@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/main_screen.dart';
+import 'package:siklas/screens/staff_borrowings_screen.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -43,7 +44,13 @@ class _LoginScreenState extends State<LoginScreen> {
       
       if (loginViewModel.isLoginSuccess) {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        Navigator.pushReplacementNamed(context, MainScreen.routePath);
+        
+        Navigator.pushReplacementNamed(
+          context,
+          loginViewModel.userModel!.role == 'mahasiswa'
+            ? MainScreen.routePath
+            : StaffBorrowingsScreen.routePath
+        );
       
         loginViewModel.isLoginSuccess = false;
       }

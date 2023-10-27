@@ -5,6 +5,14 @@ import 'package:siklas/models/user_model.dart';
 import 'package:siklas/repositories/user_firebase_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {
+  UserModel? _userModel;
+
+  UserModel? get userModel => _userModel;
+
+  set userModel(UserModel? userModel) {
+    _userModel = userModel;
+  }
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
@@ -70,11 +78,13 @@ class LoginViewModel extends ChangeNotifier {
 
         if (user != null) {
           await setUserData(
+            authId: authId,
             userId: user.id,
             userName: user.name,
-            userInitialName: user.getInitialName(),
             userRole: user.role
           );
+
+          userModel = user;
           
           isLoginSuccess = true;
 
@@ -96,15 +106,15 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<void> setUserData({
+    required String authId,
     required String userId,
     required String userName,
-    required String userInitialName,
     required String userRole,
   }) async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('authId', authId);
     await prefs.setString('userId', userId);
     await prefs.setString('userName', userName);
-    await prefs.setString('userInitialName', userInitialName);
     await prefs.setString('userRole', userRole);
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/login_screen.dart';
-import 'package:siklas/view_models/initial_name_view_model.dart';
+import 'package:siklas/view_models/login_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/main_view_model.dart';
 import 'package:siklas/view_models/borrowing_histories_view_model.dart';
@@ -19,8 +19,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     if (mounted) {
-      Provider.of<InitialNameViewModel>(context, listen: false).getInitialName();
-
       context.read<MainViewModel>().addListener(_showUserBorrowingsScreenListener);
     }
 
@@ -64,10 +62,10 @@ class _MainScreenState extends State<MainScreen> {
             height: 40,
             child: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
-              child: Consumer<InitialNameViewModel>(
+              child: Consumer<LoginViewModel>(
                 builder: (context, state, _) {
                   return Text(
-                    state.initialName,
+                    state.userModel!.getInitialName(),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)
                   );
                 }

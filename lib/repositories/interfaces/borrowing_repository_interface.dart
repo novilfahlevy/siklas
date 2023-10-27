@@ -8,6 +8,8 @@ abstract class BorrowingRepositoryInterface {
 
   Future<List<BorrowingModel>> getBorrowingsByUserId(String userId);
 
+  Future<List<BorrowingModel>> getNotYetRespondedBorrowings();
+
   Future<BorrowingModel?> createBorrowing({
     required String classId,
     required String majorId,
@@ -20,6 +22,13 @@ abstract class BorrowingRepositoryInterface {
     required TimeOfDay timeUntil,
     String? staffId,
     String? rejectedMessage
+  });
+
+  Future<bool> acceptBorrowing(String borrowingId);
+
+  Future<bool> rejectBorrowing({
+    required String borrowingId,
+    required String description
   });
 
   Future<bool> cancelBorrowingById(String borrowingId);
