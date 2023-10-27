@@ -26,6 +26,50 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
     Navigator.pushNamed(context, RejectBorrowingScreen.routePath);
   }
 
+  void _confirmAcceptBorrowing() async {
+    await showDialog(
+      context: context,
+      builder: (context) =>
+        AlertDialog(
+          title: Center(
+            child: Text(
+              'Konfirmasi persetujuan?',
+              style: Theme.of(context).textTheme.bodyLarge
+            ),
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Batal', style: Theme.of(context).textTheme.bodyMedium,)
+            ),
+            TextButton(
+              onPressed: () => _acceptBorrowing(),
+              child: Text('Iya', style: Theme.of(context).textTheme.bodyMedium,)
+            ),
+          ],
+        ),
+    );
+  }
+
+  void _acceptBorrowing() async {
+    Navigator.pop(context);
+    
+    final staffBorrowingViewModel = Provider.of<StaffBorrowingViewModel>(context, listen: false);
+
+    await staffBorrowingViewModel.acceptBorrowing();
+
+    _showAcceptBorrowingSuccessMessage();
+    
+    staffBorrowingViewModel.fetchBorrowingById(staffBorrowingViewModel.borrowingModel!.id);
+  }
+
+  void _showAcceptBorrowingSuccessMessage() {
+    ScaffoldMessenger
+      .of(context)
+      .showSnackBar(const SnackBar(content: Text('Peminjaman berhasil disetujui.')));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,8 +222,16 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
                         disabledBackgroundColor: Colors.green,
                         disabledForegroundColor: Theme.of(context).colorScheme.secondary,
                       ),
-                      onPressed: state.isFetchingBorrowing ? null : _goToRejectBorrowingScreen,
-                      child: const Text('Setujui')
+                      onPressed: state.isFetchingBorrowing ? null : _confirmAcceptBorrowing,
+                      child: state.isAcceptingBorrowing
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.surface,
+                            ),
+                          )
+                        : const Text('Setujui')
                     ),
                   ),
                 ],

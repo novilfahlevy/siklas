@@ -73,4 +73,22 @@ class StaffBorrowingViewModel extends ChangeNotifier {
       isFetchingBorrowing = false;
     }
   }
+
+  bool _isAcceptingBorrowing = true;
+
+  bool get isAcceptingBorrowing => _isAcceptingBorrowing;
+
+  set isAcceptingBorrowing(bool isFetching) {
+    _isAcceptingBorrowing = isFetching;
+    notifyListeners();
+  }
+
+  Future<void> acceptBorrowing() async {
+    isAcceptingBorrowing = true;
+
+    BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
+    await repository.acceptBorrowing(borrowingModel!.id);
+
+    isAcceptingBorrowing = false;
+  }
 }
