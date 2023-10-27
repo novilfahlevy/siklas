@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/models/major_model.dart';
 import 'package:siklas/screens/widgets/timepicker.dart';
-import 'package:siklas/view_models/class_borrowing_view_model.dart';
+import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/screens/widgets/datepicker.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
@@ -30,7 +30,7 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
   void _borrowingCreatedListener() {
     if (mounted) {
       final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
-      final borrowingViewModel = Provider.of<ClassBorrowingViewModel>(context, listen: false);
+      final borrowingViewModel = Provider.of<BorrowingsViewModel>(context, listen: false);
 
       if (createBorrowingViewModel.isBorrowingCreated) {
         ScaffoldMessenger

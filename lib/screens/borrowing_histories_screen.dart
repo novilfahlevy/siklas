@@ -1,46 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:siklas/screens/borrowing_screen.dart';
+import 'package:siklas/screens/borrowing_history_screen.dart';
 import 'package:siklas/screens/widgets/tag.dart';
-import 'package:siklas/view_models/borrowings_view_model.dart';
-import 'package:siklas/view_models/borrowing_view_model.dart';
+import 'package:siklas/view_models/borrowing_history_view_model.dart';
+import 'package:siklas/view_models/borrowing_histories_view_model.dart';
 
-class ClassBorrowingsScreen extends StatefulWidget {
-  const ClassBorrowingsScreen({super.key});
+class BorrowingHistoriesScreen extends StatefulWidget {
+  static const String routePath = '/borrowings';
+
+  const BorrowingHistoriesScreen({super.key});
 
   @override
-  State<ClassBorrowingsScreen> createState() => _ClassBorrowingsScreenState();
+  State<BorrowingHistoriesScreen> createState() => _BorrowingHistoriesScreenState();
 }
 
-class _ClassBorrowingsScreenState extends State<ClassBorrowingsScreen> {
+class _BorrowingHistoriesScreenState extends State<BorrowingHistoriesScreen> {
   void _goToDetailBorrowingScreen(String borrowingId) {
     Provider
-      .of<BorrowingViewModel>(context, listen: false)
+      .of<BorrowingHistoryViewModel>(context, listen: false)
       .fetchBorrowingById(borrowingId);
 
-    Navigator.pushNamed(context, BorrowingScreen.routePath);
+    Navigator.pushNamed(context, BorrowingHistoryScreen.routePath);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8, right: 8,),
-      child: Consumer<BorrowingsViewModel>(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Consumer<BorrowingHistoriesViewModel>(
         builder: (context, state, _) {
           if (state.isFetchingBorrowings) {
-            return const Center(
-              child: CircularProgressIndicator(
-                strokeAlign: 3.0,
-                strokeWidth: 3.0,
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.borrowings.isEmpty) {
+            return Center(
+              child: Text(
+                'Tidak ada peminjaman',
+                style: Theme.of(context).textTheme.bodyLarge
               )
             );
           }
 
-          if (state.borrowings.isEmpty) {
-            return const Center(child: Text('Tidak ada peminjaman di kelas ini'));
-          }
-
           return ListView.builder(
+            itemCount: state.borrowings.length,
             itemBuilder: (context, index) =>
               Padding(
                 padding: EdgeInsets.only(top: index == 0 ? 8 : 0),
@@ -77,10 +80,9 @@ class _ClassBorrowingsScreenState extends State<ClassBorrowingsScreen> {
                   ),
                 ),
               ),
-            itemCount: state.borrowings.length
           );
         }
-      ),
+      )
     );
   }
 }

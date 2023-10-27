@@ -32,6 +32,12 @@ class BorrowingModel {
     this.rejectedMessage
   });
 
+  String getStatus() {
+    if (status == 0) return 'Menunggu persetujuan';
+    if (status == 1) return 'Tidak disetujui';
+    return 'Disetujui';
+  }
+
   String dateFormatted() {
     return DateFormat('d MMMM y').format(date);
   }

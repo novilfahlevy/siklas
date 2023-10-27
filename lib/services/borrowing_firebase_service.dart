@@ -2,6 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BorrowingFirebaseService {
+  Future<DocumentSnapshot?> getBorrowingById(String borrowingId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      return await db.collection('borrowings').doc(borrowingId).get();
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
+  }
+
   Future<List<QueryDocumentSnapshot>> getBorrowingsByClassId(String classId) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -20,13 +30,19 @@ class BorrowingFirebaseService {
     }
   }
 
-  Future<DocumentSnapshot?> getBorrowingById(String borrowingId) async {
+  Future<List<QueryDocumentSnapshot>> getBorrowingsByUserId(String userId) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
-      return await db.collection('borrowings').doc(borrowingId).get();
+      final borrowings = await db.collection('borrowings')
+        .where('user_id', isEqualTo: FirebaseFirestore.instance.doc('users/$userId'))
+        .orderBy('status')
+        .orderBy('created_at')
+        .get();
+      
+      return borrowings.docs;
     } on Exception catch (e) {
       debugPrint(e.toString());
-      return null;
+      return [];
     }
   }
 
@@ -77,6 +93,21 @@ class BorrowingFirebaseService {
     } on Exception catch (e) {
       debugPrint(e.toString());
       return null;
+    }
+  }
+
+  Future<bool> cancelBorrowingById(String borrowingId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      
+      await db.collection('borrowings')
+        .doc(borrowingId)
+        .delete();
+      
+      return true;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return false;
     }
   }
 }

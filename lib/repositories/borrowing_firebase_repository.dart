@@ -1,11 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:siklas/models/borrowing_model.dart';
-import 'package:intl/intl.dart';
 import 'package:siklas/repositories/interfaces/borrowing_repository_interface.dart';
 import 'package:siklas/services/borrowing_firebase_service.dart';
 
 class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
+  @override
+  Future<BorrowingModel?> getBorrowingById(String borrowingId) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    final borrowingDoc = await service.getBorrowingById(borrowingId);
+
+    if (borrowingDoc != null) {
+      final classDocRef = borrowingDoc.get('class_id');
+      final classDoc = await classDocRef.get();
+
+      final majorDocRef = borrowingDoc.get('major_id');
+      final majorDoc = await majorDocRef.get();
+
+      final userDocRef = borrowingDoc.get('user_id');
+      final userDoc = await userDocRef.get();
+
+      return BorrowingModel(
+        id: borrowingDoc.id,
+        classId: classDoc.id,
+        majorId: majorDoc.id,
+        userId: userDoc.id,
+        title: borrowingDoc.get('title'),
+        description: borrowingDoc.get('title'),
+        status: borrowingDoc.get('status'),
+        date: (borrowingDoc.get('date') as Timestamp).toDate(),
+        timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
+        timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
+        createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+      );
+    }
+
+    return null;
+  }
+
   @override
   Future<List<BorrowingModel>> getBorrowingsByClassId(String classId) async {
     final BorrowingFirebaseService service = BorrowingFirebaseService();
@@ -46,36 +78,42 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
   }
 
   @override
-  Future<BorrowingModel?> getBorrowingById(String borrowingId) async {
+  Future<List<BorrowingModel>> getBorrowingsByUserId(String userId) async {
     final BorrowingFirebaseService service = BorrowingFirebaseService();
-    final borrowingDoc = await service.getBorrowingById(borrowingId);
+    final borrowingDocs = await service.getBorrowingsByUserId(userId);
 
-    if (borrowingDoc != null) {
-      final classDocRef = borrowingDoc.get('class_id');
-      final classDoc = await classDocRef.get();
+    if (borrowingDocs.isNotEmpty) {
+      List<BorrowingModel> borrowings = [];
 
-      final majorDocRef = borrowingDoc.get('major_id');
-      final majorDoc = await majorDocRef.get();
+      for (final borrowingDoc in borrowingDocs.toList()) {
+        final classDocRef = borrowingDoc.get('class_id');
+        final classDoc = await classDocRef.get();
 
-      final userDocRef = borrowingDoc.get('user_id');
-      final userDoc = await userDocRef.get();
+        final majorDocRef = borrowingDoc.get('major_id');
+        final majorDoc = await majorDocRef.get();
 
-      return BorrowingModel(
-        id: borrowingDoc.id,
-        classId: classDoc.id,
-        majorId: majorDoc.id,
-        userId: userDoc.id,
-        title: borrowingDoc.get('title'),
-        description: borrowingDoc.get('title'),
-        status: borrowingDoc.get('status'),
-        date: (borrowingDoc.get('date') as Timestamp).toDate(),
-        timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
-        timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
-        createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
-      );
+        final userDocRef = borrowingDoc.get('user_id');
+        final userDoc = await userDocRef.get();
+
+        borrowings.add(BorrowingModel(
+          id: borrowingDoc.id,
+          classId: classDoc.id,
+          majorId: majorDoc.id,
+          userId: userDoc.id,
+          title: borrowingDoc.get('title'),
+          description: borrowingDoc.get('title'),
+          status: borrowingDoc.get('status'),
+          date: (borrowingDoc.get('date') as Timestamp).toDate(),
+          timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
+          timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
+          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+        ));
+      }
+
+      return borrowings;
     }
 
-    return null;
+    return [];
   }
 
   @override
@@ -130,15 +168,9 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
     return null;
   }
   
-  DateTime convertTimestampToDateTime(dynamic timestamp) {
-    return (timestamp as Timestamp).toDate();
-  }
-
-  String convertDatetimeToDate(DateTime date) {
-    return DateFormat('d MMMM y').format(date);
-  }
-
-  String convertDatetimeToTime(DateTime date) {
-    return DateFormat('Hm').format(date);
+  @override
+  Future<bool> cancelBorrowingById(String borrowingId) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    return await service.cancelBorrowingById(borrowingId);
   }
 }
