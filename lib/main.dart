@@ -11,6 +11,7 @@ import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/splash_screen.dart';
 import 'package:siklas/screens/borrowing_histories_screen.dart';
+import 'package:siklas/screens/staff_borrowings_screen.dart';
 import 'package:siklas/view_models/borrowing_history_view_model.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
@@ -80,6 +81,7 @@ class App extends StatelessWidget {
         BorrowingScreen.routePath: (context) => const BorrowingScreen(),
         BorrowingHistoriesScreen.routePath: (context) => const BorrowingHistoriesScreen(),
         BorrowingHistoryScreen.routePath: (context) => const BorrowingHistoryScreen(),
+        StaffBorrowingsScreen.routePath: (context) => const StaffBorrowingsScreen()
       },
     );
   }

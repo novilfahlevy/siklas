@@ -5,6 +5,14 @@ import 'package:siklas/models/user_model.dart';
 import 'package:siklas/repositories/user_firebase_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {
+  UserModel? _userModel;
+
+  UserModel? get userModel => _userModel;
+
+  set userModel(UserModel? userModel) {
+    _userModel = userModel;
+  }
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
@@ -75,6 +83,8 @@ class LoginViewModel extends ChangeNotifier {
             userInitialName: user.getInitialName(),
             userRole: user.role
           );
+
+          userModel = user;
           
           isLoginSuccess = true;
 
