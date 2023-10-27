@@ -46,6 +46,21 @@ class BorrowingFirebaseService {
     }
   }
 
+  Future<List<QueryDocumentSnapshot>> getNotYetRespondedBorrowings() async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      final borrowings = await db.collection('borrowings')
+        .orderBy('status')
+        .orderBy('created_at')
+        .get();
+      
+      return borrowings.docs;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return [];
+    }
+  }
+
   Future<Map<String, dynamic>?> createBorrowing({
     required String classId,
     required String majorId,

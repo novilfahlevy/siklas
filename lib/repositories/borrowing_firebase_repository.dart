@@ -117,6 +117,45 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
   }
 
   @override
+  Future<List<BorrowingModel>> getNotYetRespondedBorrowings() async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    final borrowingDocs = await service.getNotYetRespondedBorrowings();
+
+    if (borrowingDocs.isNotEmpty) {
+      List<BorrowingModel> borrowings = [];
+
+      for (final borrowingDoc in borrowingDocs.toList()) {
+        final classDocRef = borrowingDoc.get('class_id');
+        final classDoc = await classDocRef.get();
+
+        final majorDocRef = borrowingDoc.get('major_id');
+        final majorDoc = await majorDocRef.get();
+
+        final userDocRef = borrowingDoc.get('user_id');
+        final userDoc = await userDocRef.get();
+
+        borrowings.add(BorrowingModel(
+          id: borrowingDoc.id,
+          classId: classDoc.id,
+          majorId: majorDoc.id,
+          userId: userDoc.id,
+          title: borrowingDoc.get('title'),
+          description: borrowingDoc.get('title'),
+          status: borrowingDoc.get('status'),
+          date: (borrowingDoc.get('date') as Timestamp).toDate(),
+          timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
+          timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
+          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+        ));
+      }
+
+      return borrowings;
+    }
+
+    return [];
+  }
+
+  @override
   Future<BorrowingModel?> createBorrowing({
     required String classId,
     required String majorId,

@@ -8,6 +8,8 @@ abstract class BorrowingRepositoryInterface {
 
   Future<List<BorrowingModel>> getBorrowingsByUserId(String userId);
 
+  Future<List<BorrowingModel>> getNotYetRespondedBorrowings();
+
   Future<BorrowingModel?> createBorrowing({
     required String classId,
     required String majorId,
