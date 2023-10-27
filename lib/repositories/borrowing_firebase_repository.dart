@@ -208,6 +208,21 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
   }
   
   @override
+  Future<bool> acceptBorrowing(String borrowingId) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    return await service.acceptBorrowing(borrowingId);
+  }
+
+  @override
+  Future<bool> rejectBorrowing({
+    required String borrowingId,
+    required String description
+  }) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    return await service.rejectBorrowing(borrowingId: borrowingId, description: description);
+  }
+  
+  @override
   Future<bool> cancelBorrowingById(String borrowingId) async {
     final BorrowingFirebaseService service = BorrowingFirebaseService();
     return await service.cancelBorrowingById(borrowingId);

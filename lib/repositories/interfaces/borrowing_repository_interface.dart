@@ -24,5 +24,12 @@ abstract class BorrowingRepositoryInterface {
     String? rejectedMessage
   });
 
+  Future<bool> acceptBorrowing(String borrowingId);
+
+  Future<bool> rejectBorrowing({
+    required String borrowingId,
+    required String description
+  });
+
   Future<bool> cancelBorrowingById(String borrowingId);
 }

@@ -9,6 +9,7 @@ import 'package:siklas/screens/create_borrowing_screen.dart';
 import 'package:siklas/screens/borrowing_screen.dart';
 import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/screens/main_screen.dart';
+import 'package:siklas/screens/reject_borrowing_screen.dart';
 import 'package:siklas/screens/splash_screen.dart';
 import 'package:siklas/screens/borrowing_histories_screen.dart';
 import 'package:siklas/screens/staff_borrowing_screen.dart';
@@ -23,6 +24,7 @@ import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:siklas/view_models/main_view_model.dart';
+import 'package:siklas/view_models/reject_borrowing_view_model.dart';
 import 'package:siklas/view_models/schedule_view_model.dart';
 import 'package:siklas/view_models/splash_view_model.dart';
 import 'package:siklas/view_models/borrowing_histories_view_model.dart';
@@ -58,6 +60,7 @@ void main() async {
         ChangeNotifierProvider<BorrowingHistoryViewModel>(create: (context) => BorrowingHistoryViewModel(),),
         ChangeNotifierProvider<StaffBorrowingsViewModel>(create: (context) => StaffBorrowingsViewModel(),),
         ChangeNotifierProvider<StaffBorrowingViewModel>(create: (context) => StaffBorrowingViewModel(),),
+        ChangeNotifierProvider<RejectBorrowingViewModel>(create: (context) => RejectBorrowingViewModel(),),
       ],
       child: const App(),
     )
@@ -86,6 +89,7 @@ class App extends StatelessWidget {
         BorrowingHistoryScreen.routePath: (context) => const BorrowingHistoryScreen(),
         StaffBorrowingsScreen.routePath: (context) => const StaffBorrowingsScreen(),
         StaffBorrowingScreen.routePath: (context) => const StaffBorrowingScreen(),
+        RejectBorrowingScreen.routePath: (context) => const RejectBorrowingScreen(),
       },
     );
   }

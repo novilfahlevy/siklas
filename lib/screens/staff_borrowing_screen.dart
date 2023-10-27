@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:siklas/screens/reject_borrowing_screen.dart';
 import 'package:siklas/screens/widgets/class_thumbnail.dart';
 import 'package:siklas/screens/widgets/tag.dart';
+import 'package:siklas/view_models/reject_borrowing_view_model.dart';
 import 'package:siklas/view_models/staff_borrowing_view_model.dart';
 
 class StaffBorrowingScreen extends StatefulWidget {
@@ -14,6 +16,16 @@ class StaffBorrowingScreen extends StatefulWidget {
 }
 
 class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
+  void _goToRejectBorrowingScreen() {
+    Provider
+      .of<RejectBorrowingViewModel>(context, listen: false)
+      .borrowingId = Provider
+        .of<StaffBorrowingViewModel>(context, listen: false)
+        .borrowingModel!.id;
+    
+    Navigator.pushNamed(context, RejectBorrowingScreen.routePath);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,36 +142,52 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 80,),
+              SizedBox(height: state.borrowingModel!.status == 0 ? 80 : 20,),
             ],
           );
         }
       ),
       floatingActionButton: Consumer<StaffBorrowingViewModel>(
         builder: (context, state, _) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            width: double.infinity,
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    onPressed: state.isFetchingBorrowing ? null : () {},
-                    child: const Text('Tolak')
+          if (state.borrowingModel == null) {
+            return const Text('');
+          }
+
+          if (state.borrowingModel!.status == 0) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        disabledBackgroundColor: Colors.red,
+                        disabledForegroundColor: Theme.of(context).colorScheme.secondary,
+                      ),
+                      onPressed: state.isFetchingBorrowing ? null : _goToRejectBorrowingScreen,
+                      child: const Text('Tolak')
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10,),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: state.isFetchingBorrowing ? null : () {},
-                    child: const Text('Setujui')
+                  const SizedBox(width: 10,),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        disabledBackgroundColor: Colors.green,
+                        disabledForegroundColor: Theme.of(context).colorScheme.secondary,
+                      ),
+                      onPressed: state.isFetchingBorrowing ? null : _goToRejectBorrowingScreen,
+                      child: const Text('Setujui')
+                    ),
                   ),
-                ),
-              ],
-            )
-          );
+                ],
+              )
+            );
+          }
+
+          return const Text('');
         }
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

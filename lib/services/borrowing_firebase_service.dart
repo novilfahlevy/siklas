@@ -125,4 +125,37 @@ class BorrowingFirebaseService {
       return false;
     }
   }
+
+  Future<bool> acceptBorrowing(String borrowingId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      
+      await db.collection('borrowings')
+        .doc(borrowingId)
+        .update({ 'status': 2 });
+      
+      return true;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> rejectBorrowing({
+    required String borrowingId,
+    required String description
+  }) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      
+      await db.collection('borrowings')
+        .doc(borrowingId)
+        .update({ 'description': description, 'status': 1 });
+      
+      return true;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
 }
