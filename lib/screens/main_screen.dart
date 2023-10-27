@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/login_screen.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 import 'package:siklas/view_models/logout_view_model.dart';
 import 'package:siklas/view_models/main_view_model.dart';
@@ -78,13 +79,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: Consumer<LogoutViewModel>(
               builder: (context, state, _) {
                 return state.isLoggingOut
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    )
+                  ? LoadingCircular(color: Theme.of(context).colorScheme.primary)
                   : Icon(
                       Icons.logout,
                       color: Theme.of(context).colorScheme.secondary

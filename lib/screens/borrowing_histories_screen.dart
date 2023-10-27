@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/borrowing_history_screen.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/screens/widgets/tag.dart';
 import 'package:siklas/view_models/borrowing_history_view_model.dart';
 import 'package:siklas/view_models/borrowing_histories_view_model.dart';
@@ -30,7 +31,12 @@ class _BorrowingHistoriesScreenState extends State<BorrowingHistoriesScreen> {
       child: Consumer<BorrowingHistoriesViewModel>(
         builder: (context, state, _) {
           if (state.isFetchingBorrowings) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingCircular(
+                size: 30,
+                color: Theme.of(context).colorScheme.primary
+              )
+            );
           }
 
           if (state.borrowings.isEmpty) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/staff_borrowings_screen.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -111,13 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: state.isLoggingIn ? null : state.login,
                       child: state.isLoggingIn
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          )
+                        ? const LoadingCircular()
                         : const Text('Masuk')
                     ),
                   ],

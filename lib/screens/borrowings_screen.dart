@@ -5,14 +5,14 @@ import 'package:siklas/screens/widgets/tag.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/borrowing_view_model.dart';
 
-class ClassBorrowingsScreen extends StatefulWidget {
-  const ClassBorrowingsScreen({super.key});
+class BorrowingsScreen extends StatefulWidget {
+  const BorrowingsScreen({super.key});
 
   @override
-  State<ClassBorrowingsScreen> createState() => _ClassBorrowingsScreenState();
+  State<BorrowingsScreen> createState() => _BorrowingsScreenState();
 }
 
-class _ClassBorrowingsScreenState extends State<ClassBorrowingsScreen> {
+class _BorrowingsScreenState extends State<BorrowingsScreen> {
   void _goToDetailBorrowingScreen(String borrowingId) {
     Provider
       .of<BorrowingViewModel>(context, listen: false)
