@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/screens/class_screen.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/classes_view_model.dart';
@@ -101,12 +102,11 @@ class _ClassesScreenState extends State<ClassesScreen> {
                   );
                 }
                 
-                return ListView.separated(
+                return ListView.builder(
                   shrinkWrap: true,
                   itemCount: state.classes.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 20,),
-                  itemBuilder: (context, index) =>
-                    GestureDetector(
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
                       onTap: () => _goToClassScreen(state.classes[index].id),
                       child: Card(
                         child: Padding(
@@ -116,11 +116,20 @@ class _ClassesScreenState extends State<ClassesScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-                                  fit: BoxFit.cover,
-                                  height: 200,
-                                  width: double.infinity,
+                                child: FutureBuilder(
+                                  future: state.classes[index].getImagePath(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Image.network(
+                                        snapshot.data!,
+                                        fit: BoxFit.cover,
+                                        height: 200,
+                                        width: double.infinity,
+                                      );
+                                    }
+
+                                    return const SizedBox(width: double.infinity, height: 200);
+                                  },
                                 ),
                               ),
                               Container(
@@ -142,9 +151,10 @@ class _ClassesScreenState extends State<ClassesScreen> {
                               ),
                             ],
                           ),
-                        ),
+                        )
                       ),
-                    ),
+                    );
+                  }
                 );
               }
             ),

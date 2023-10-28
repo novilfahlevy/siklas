@@ -16,6 +16,7 @@ class UserFirebaseService {
   }
 
   Future<DocumentSnapshot?> getUserById(String userId) async {
+    
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       final user = await db.collection('users').doc(userId).get();

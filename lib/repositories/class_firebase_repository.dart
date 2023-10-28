@@ -11,12 +11,18 @@ class ClassFirebaseRepository implements ClassRepositoryInterface {
     if (classDocs.isNotEmpty) {
       return classDocs
         .toList()
-        .map((final classDoc) => ClassModel(
-          id: classDoc.id,
-          name: classDoc.get('name'),
-          imageFilename: classDoc.get('image_name'),
-          floorId: floorId,
-        ))
+        .map((final classDoc) {
+          final images = classDoc.get('image_name') as List<dynamic>;
+          
+          return ClassModel(
+            id: classDoc.id,
+            name: classDoc.get('name'),
+            imageFilename: images
+              .map((imageName) => imageName.toString())
+              .toList(),
+            floorId: floorId,
+          );
+        })
         .toList();
     }
 
@@ -32,10 +38,14 @@ class ClassFirebaseRepository implements ClassRepositoryInterface {
       final floorDocRef = classDoc.get('floor_id');
       final floorDoc = await floorDocRef.get();
 
+      final images = classDoc.get('image_name') as List<dynamic>;
+
       return ClassModel(
         id: classDoc.id,
         name: classDoc.get('name'),
-        imageFilename: classDoc.get('image_name'),
+        imageFilename: images
+        .map((imageName) => imageName.toString())
+          .toList(),
         floorId: floorDoc.id,
       );
     }

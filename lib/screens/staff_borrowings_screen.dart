@@ -124,11 +124,20 @@ class _StaffBorrowingsScreenState extends State<StaffBorrowingsScreen> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-                                        fit: BoxFit.cover,
-                                        height: 200,
-                                        width: double.infinity,
+                                      child: FutureBuilder(
+                                        future: snapshot.data!.getImagePath(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Image.network(
+                                              snapshot.data!,
+                                              fit: BoxFit.cover,
+                                              height: 200,
+                                              width: double.infinity,
+                                            );
+                                          }
+
+                                          return const SizedBox(width: double.infinity, height: 200);
+                                        },
                                       ),
                                     ),
                                     Container(
