@@ -85,7 +85,10 @@ class StaffBorrowingViewModel extends ChangeNotifier {
       classModel = await classRepository.getClassById(borrowingModel!.classId);
       floorModel = await floorRepository.getFloorById(classModel!.floorId);
       majorModel = await majorRepository.getMajorById(borrowingModel!.majorId);
-      staffModel = await userRepository.getUserById(borrowingModel!.staffId!);
+
+      if (borrowingModel!.staffId != '') {
+        staffModel = await userRepository.getUserById(borrowingModel!.staffId!);
+      }
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {

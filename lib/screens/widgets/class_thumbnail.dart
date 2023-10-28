@@ -24,10 +24,19 @@ class ClassThumbnail extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              'https://feb.unr.ac.id/wp-content/uploads/2023/03/650ed502-a5ba-4406-8011-d739652a1e9c-1536x864.jpg',
-              width: thumbnailSize,
-              fit: BoxFit.cover,
+            child: FutureBuilder(
+              future: classModel!.getImagePath(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Image.network(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                    width: thumbnailSize,
+                  );
+                }
+
+                return SizedBox(width: thumbnailSize);
+              },
             ),
           ),
           const SizedBox(width: 20,),
