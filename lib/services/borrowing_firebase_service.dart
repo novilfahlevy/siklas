@@ -91,7 +91,8 @@ class BorrowingFirebaseService {
         'date': Timestamp.fromDate(date),
         'time_from': Timestamp.fromDate(DateTime(date.year, date.month, date.day, timeFrom.hour, timeFrom.minute)),
         'time_until': Timestamp.fromDate(DateTime(date.year, date.month, date.day, timeUntil.hour, timeUntil.minute)),
-        'created_at': now
+        'created_at': now,
+        'rejected_message': rejectedMessage ?? ''
       };
 
       final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -143,14 +144,19 @@ class BorrowingFirebaseService {
 
   Future<bool> rejectBorrowing({
     required String borrowingId,
-    required String description
+    required String staffId,
+    required String message
   }) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       
       await db.collection('borrowings')
         .doc(borrowingId)
-        .update({ 'description': description, 'status': 1 });
+        .update({
+          'rejected_message': message,
+          'status': 1,
+          'staff_id': db.collection('users').doc(staffId)
+        });
       
       return true;
     } on Exception catch (e) {

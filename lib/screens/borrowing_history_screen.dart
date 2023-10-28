@@ -123,16 +123,41 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
                       children: [
                         Text('Status', style: Theme.of(context).textTheme.titleSmall,),
                         const SizedBox(height: 10,),
-                        Tag(
-                          label: state.borrowingModel!.getStatus(),
-                          backgroundColor: state.borrowingModel!.status == 0
-                            ? Theme.of(context).colorScheme.secondary
-                            : state.borrowingModel!.status == 1
-                              ? Theme.of(context).colorScheme.error
-                              : Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white
+                        Row(
+                          children: [
+                            Tag(
+                              label: state.borrowingModel!.getStatus(),
+                              backgroundColor: state.borrowingModel!.status == 0
+                                ? Theme.of(context).colorScheme.secondary
+                                : state.borrowingModel!.status == 1
+                                  ? Theme.of(context).colorScheme.error
+                                  : Theme.of(context).colorScheme.primary,
+                              textColor: Colors.white
+                            ),
+                            const SizedBox(width: 10,),
+                            Expanded(
+                              child: Text(state.staffModel != null ? '(${state.staffModel!.name})' : '')
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 30,),
+                        Builder(
+                          builder: (context) {
+                            if (state.borrowingModel!.status == 1) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 30,),
+                                  Text('Keterangan penolakan', style: Theme.of(context).textTheme.titleSmall,),
+                                  const SizedBox(height: 10,),
+                                  Text(state.borrowingModel!.rejectedMessage!, style: Theme.of(context).textTheme.bodyLarge,),
+                                  const SizedBox(height: 30,),
+                                ],
+                              );
+                            }
+
+                            return const Text('');
+                          },
+                        ),
                         Text('Tanggal pengajuan', style: Theme.of(context).textTheme.titleSmall,),
                         const SizedBox(height: 10,),
                         Row(
@@ -195,7 +220,7 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
       ),
       floatingActionButton: Consumer<BorrowingHistoryViewModel>(
         builder: (context, state, _) {
-          if (state.isFetchingBorrowing) {
+          if (state.isFetchingBorrowing || state.borrowingModel!.status != 0) {
             return const Text('');
           }
 

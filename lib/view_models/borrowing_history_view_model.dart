@@ -3,6 +3,7 @@ import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/models/major_model.dart';
+import 'package:siklas/models/user_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 
 class BorrowingHistoryViewModel extends ChangeNotifier {
@@ -42,6 +43,15 @@ class BorrowingHistoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  UserModel? _staffModel;
+
+  UserModel? get staffModel => _staffModel;
+
+  set staffModel(UserModel? staffModel) {
+    _staffModel = staffModel;
+    notifyListeners();
+  }
+
   bool _isFetchingBorrowing = true;
 
   bool get isFetchingBorrowing => _isFetchingBorrowing;
@@ -71,6 +81,7 @@ class BorrowingHistoryViewModel extends ChangeNotifier {
       _majorModel = await _borrowingModel!.getMajorModel();
       _classModel = await _borrowingModel!.getClassModel();
       _floorModel = await _classModel!.getFloorModel();
+      _staffModel = await _borrowingModel!.getStaffModel();
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {

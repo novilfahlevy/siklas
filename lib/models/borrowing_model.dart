@@ -67,10 +67,12 @@ class BorrowingModel {
   }
 
   Future<UserModel?> getStaffModel() async {
-    UserFirebaseRepository repository = UserFirebaseRepository();
-    final userModel = await repository.getUserById(userId);
+    if (staffId != '') {
+      UserFirebaseRepository repository = UserFirebaseRepository();
+      final userModel = await repository.getUserById(staffId!);
 
-    if (userModel != null) return userModel;
+      if (userModel != null) return userModel;
+    }
 
     return null;
   }

@@ -57,7 +57,7 @@ class _RejectBorrowingScreenState extends State<RejectBorrowingScreen> {
                 children: [
                   const SizedBox(height: 10,),
                   TextFormField(
-                    controller: state.descriptionController,
+                    controller: state.messageController,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                       label: Text('Keterangan'),
