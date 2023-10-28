@@ -4,9 +4,6 @@ import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/models/major_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
-import 'package:siklas/repositories/class_firebase_repository.dart';
-import 'package:siklas/repositories/floor_firebase_repository.dart';
-import 'package:siklas/repositories/major_firebase_repository.dart';
 
 class BorrowingHistoryViewModel extends ChangeNotifier {
   BorrowingModel? _borrowingModel;
@@ -68,14 +65,12 @@ class BorrowingHistoryViewModel extends ChangeNotifier {
 
     try {
       final BorrowingFirebaseRepository borrowingRepository = BorrowingFirebaseRepository();
-      final ClassFirebaseRepository classRepository = ClassFirebaseRepository();
-      final FloorFirebaseRepository floorRepository = FloorFirebaseRepository();
-      final MajorFirebaseRepository majorRepository = MajorFirebaseRepository();
 
       _borrowingModel = await borrowingRepository.getBorrowingById(borrowingId);
-      _classModel = await classRepository.getClassById(_borrowingModel!.classId);
-      _floorModel = await floorRepository.getFloorById(_classModel!.floorId);
-      _majorModel = await majorRepository.getMajorById(_borrowingModel!.majorId);
+
+      _majorModel = await _borrowingModel!.getMajorModel();
+      _classModel = await _borrowingModel!.getClassModel();
+      _floorModel = await _classModel!.getFloorModel();
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {

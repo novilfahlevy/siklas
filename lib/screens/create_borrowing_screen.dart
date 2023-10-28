@@ -2,12 +2,13 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siklas/models/major_model.dart';
+import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/screens/widgets/timepicker.dart';
-import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/screens/widgets/datepicker.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
+import 'package:siklas/view_models/main_view_model.dart';
 
 class CreateBorrowingScreen extends StatefulWidget {
   static const String routePath = '/create-borrowing';
@@ -31,7 +32,7 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
   void _borrowingCreatedListener() {
     if (mounted) {
       final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
-      final borrowingViewModel = Provider.of<BorrowingsViewModel>(context, listen: false);
+      final mainViewModel = Provider.of<MainViewModel>(context, listen: false);
 
       if (createBorrowingViewModel.isBorrowingCreated) {
         ScaffoldMessenger
@@ -40,9 +41,9 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
 
         createBorrowingViewModel.isBorrowingCreated = false;
 
-        borrowingViewModel.fetchBorrowings(createBorrowingViewModel.currentClass!.id);
+        mainViewModel.selectedScreenIndex = 1;
 
-        Navigator.pop(context);
+        Navigator.popUntil(context, ModalRoute.withName(MainScreen.routePath));
       }
     }
   }

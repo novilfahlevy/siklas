@@ -194,7 +194,7 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
       ),
       floatingActionButton: Consumer<StaffBorrowingViewModel>(
         builder: (context, state, _) {
-          if (state.borrowingModel == null) {
+          if (state.isFetchingBorrowing) {
             return const Text('');
           }
 
@@ -211,7 +211,7 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
                         disabledBackgroundColor: Colors.red,
                         disabledForegroundColor: Theme.of(context).colorScheme.secondary,
                       ),
-                      onPressed: state.isFetchingBorrowing ? null : _goToRejectBorrowingScreen,
+                      onPressed: _goToRejectBorrowingScreen,
                       child: const Text('Tolak')
                     ),
                   ),
@@ -223,7 +223,7 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
                         disabledBackgroundColor: Colors.green,
                         disabledForegroundColor: Theme.of(context).colorScheme.secondary,
                       ),
-                      onPressed: state.isFetchingBorrowing ? null : _confirmAcceptBorrowing,
+                      onPressed: state.isAcceptingBorrowing ? null : _confirmAcceptBorrowing,
                       child: state.isAcceptingBorrowing
                         ? const LoadingCircular()
                         : const Text('Setujui')

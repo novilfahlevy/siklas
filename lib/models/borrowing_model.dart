@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:siklas/models/class_model.dart';
+import 'package:siklas/models/major_model.dart';
+import 'package:siklas/models/user_model.dart';
+import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 import 'package:siklas/repositories/class_firebase_repository.dart';
+import 'package:siklas/repositories/major_firebase_repository.dart';
+import 'package:siklas/repositories/user_firebase_repository.dart';
 
 class BorrowingModel {
   String id;
@@ -39,6 +44,33 @@ class BorrowingModel {
     final classModel = await repository.getClassById(classId);
 
     if (classModel != null) return classModel;
+
+    return null;
+  }
+
+  Future<MajorModel?> getMajorModel() async {
+    MajorFirebaseRepository repository = MajorFirebaseRepository();
+    final majorModel = await repository.getMajorById(majorId);
+
+    if (majorModel != null) return majorModel;
+
+    return null;
+  }
+
+  Future<UserModel?> getUserModel() async {
+    UserFirebaseRepository repository = UserFirebaseRepository();
+    final userModel = await repository.getUserById(userId);
+
+    if (userModel != null) return userModel;
+
+    return null;
+  }
+
+  Future<UserModel?> getStaffModel() async {
+    UserFirebaseRepository repository = UserFirebaseRepository();
+    final userModel = await repository.getUserById(userId);
+
+    if (userModel != null) return userModel;
 
     return null;
   }
