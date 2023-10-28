@@ -10,28 +10,53 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
     final BorrowingFirebaseService service = BorrowingFirebaseService();
     final borrowingDoc = await service.getBorrowingById(borrowingId);
 
+
     if (borrowingDoc != null) {
-      final classDocRef = borrowingDoc.get('class_id');
-      final classDoc = await classDocRef.get();
+      final borrowingMap = borrowingDoc.data() as Map<String, dynamic>;
 
-      final majorDocRef = borrowingDoc.get('major_id');
-      final majorDoc = await majorDocRef.get();
+      String classId = '';
+      String majorId = '';
+      String userId = '';
+      String staffId = '';
 
-      final userDocRef = borrowingDoc.get('user_id');
-      final userDoc = await userDocRef.get();
+      if (borrowingMap.containsKey('class_id')) {
+        final classDocRef = borrowingDoc.get('class_id');
+        final classDoc = await classDocRef.get();
+        classId = classDoc.id;
+      }
+
+      if (borrowingMap.containsKey('major_id')) {
+        final majorDocRef = borrowingDoc.get('major_id');
+        final majorDoc = await majorDocRef.get();
+        majorId = majorDoc.id;
+      }
+
+      if (borrowingMap.containsKey('user_id')) {
+        final userDocRef = borrowingDoc.get('user_id');
+        final userDoc = await userDocRef.get();
+        userId = userDoc.id;
+      }
+
+      if (borrowingMap.containsKey('staff_id')) {
+        final staffDocRef = borrowingDoc.get('staff_id');
+        final staffDoc = await staffDocRef.get();
+        staffId = staffDoc.id;
+      }
 
       return BorrowingModel(
         id: borrowingDoc.id,
-        classId: classDoc.id,
-        majorId: majorDoc.id,
-        userId: userDoc.id,
+        classId: classId,
+        majorId: majorId,
+        userId: userId,
+        staffId: staffId,
         title: borrowingDoc.get('title'),
         description: borrowingDoc.get('title'),
         status: borrowingDoc.get('status'),
         date: (borrowingDoc.get('date') as Timestamp).toDate(),
         timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
         timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
-        createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+        createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate(),
+        rejectedMessage: borrowingDoc.get('rejected_message')
       );
     }
 
@@ -47,27 +72,51 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
       List<BorrowingModel> borrowings = [];
 
       for (final borrowingDoc in borrowingDocs.toList()) {
-        final classDocRef = borrowingDoc.get('class_id');
-        final classDoc = await classDocRef.get();
+        final borrowingMap = borrowingDoc.data() as Map<String, dynamic>;
 
-        final majorDocRef = borrowingDoc.get('major_id');
-        final majorDoc = await majorDocRef.get();
+        String classId = '';
+        String majorId = '';
+        String userId = '';
+        String staffId = '';
 
-        final userDocRef = borrowingDoc.get('user_id');
-        final userDoc = await userDocRef.get();
+        if (borrowingMap.containsKey('class_id')) {
+          final classDocRef = borrowingDoc.get('class_id');
+          final classDoc = await classDocRef.get();
+          classId = classDoc.id;
+        }
+
+        if (borrowingMap.containsKey('major_id')) {
+          final majorDocRef = borrowingDoc.get('major_id');
+          final majorDoc = await majorDocRef.get();
+          majorId = majorDoc.id;
+        }
+
+        if (borrowingMap.containsKey('user_id')) {
+          final userDocRef = borrowingDoc.get('user_id');
+          final userDoc = await userDocRef.get();
+          userId = userDoc.id;
+        }
+
+        if (borrowingMap.containsKey('staff_id')) {
+          final staffDocRef = borrowingDoc.get('staff_id');
+          final staffDoc = await staffDocRef.get();
+          staffId = staffDoc.id;
+        }
 
         borrowings.add(BorrowingModel(
           id: borrowingDoc.id,
-          classId: classDoc.id,
-          majorId: majorDoc.id,
-          userId: userDoc.id,
+          classId: classId,
+          majorId: majorId,
+          userId: userId,
+          staffId: staffId,
           title: borrowingDoc.get('title'),
           description: borrowingDoc.get('title'),
           status: borrowingDoc.get('status'),
           date: (borrowingDoc.get('date') as Timestamp).toDate(),
           timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
           timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
-          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate(),
+          rejectedMessage: borrowingDoc.get('rejected_message')
         ));
       }
 
@@ -86,27 +135,51 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
       List<BorrowingModel> borrowings = [];
 
       for (final borrowingDoc in borrowingDocs.toList()) {
-        final classDocRef = borrowingDoc.get('class_id');
-        final classDoc = await classDocRef.get();
+        final borrowingMap = borrowingDoc.data() as Map<String, dynamic>;
 
-        final majorDocRef = borrowingDoc.get('major_id');
-        final majorDoc = await majorDocRef.get();
+        String classId = '';
+        String majorId = '';
+        String userId = '';
+        String staffId = '';
 
-        final userDocRef = borrowingDoc.get('user_id');
-        final userDoc = await userDocRef.get();
+        if (borrowingMap.containsKey('class_id')) {
+          final classDocRef = borrowingDoc.get('class_id');
+          final classDoc = await classDocRef.get();
+          classId = classDoc.id;
+        }
+
+        if (borrowingMap.containsKey('major_id')) {
+          final majorDocRef = borrowingDoc.get('major_id');
+          final majorDoc = await majorDocRef.get();
+          majorId = majorDoc.id;
+        }
+
+        if (borrowingMap.containsKey('user_id')) {
+          final userDocRef = borrowingDoc.get('user_id');
+          final userDoc = await userDocRef.get();
+          userId = userDoc.id;
+        }
+
+        if (borrowingMap.containsKey('staff_id')) {
+          final staffDocRef = borrowingDoc.get('staff_id');
+          final staffDoc = await staffDocRef.get();
+          staffId = staffDoc.id;
+        }
 
         borrowings.add(BorrowingModel(
           id: borrowingDoc.id,
-          classId: classDoc.id,
-          majorId: majorDoc.id,
-          userId: userDoc.id,
+          classId: classId,
+          majorId: majorId,
+          userId: userId,
+          staffId: staffId,
           title: borrowingDoc.get('title'),
           description: borrowingDoc.get('title'),
           status: borrowingDoc.get('status'),
           date: (borrowingDoc.get('date') as Timestamp).toDate(),
           timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
           timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
-          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate(),
+          rejectedMessage: borrowingDoc.get('rejected_message')
         ));
       }
 
@@ -125,27 +198,51 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
       List<BorrowingModel> borrowings = [];
 
       for (final borrowingDoc in borrowingDocs.toList()) {
-        final classDocRef = borrowingDoc.get('class_id');
-        final classDoc = await classDocRef.get();
+      final borrowingMap = borrowingDoc.data() as Map<String, dynamic>;
 
-        final majorDocRef = borrowingDoc.get('major_id');
-        final majorDoc = await majorDocRef.get();
+        String classId = '';
+        String majorId = '';
+        String userId = '';
+        String staffId = '';
 
-        final userDocRef = borrowingDoc.get('user_id');
-        final userDoc = await userDocRef.get();
+        if (borrowingMap.containsKey('class_id')) {
+          final classDocRef = borrowingDoc.get('class_id');
+          final classDoc = await classDocRef.get();
+          classId = classDoc.id;
+        }
+
+        if (borrowingMap.containsKey('major_id')) {
+          final majorDocRef = borrowingDoc.get('major_id');
+          final majorDoc = await majorDocRef.get();
+          majorId = majorDoc.id;
+        }
+
+        if (borrowingMap.containsKey('user_id')) {
+          final userDocRef = borrowingDoc.get('user_id');
+          final userDoc = await userDocRef.get();
+          userId = userDoc.id;
+        }
+
+        if (borrowingMap.containsKey('staff_id')) {
+          final staffDocRef = borrowingDoc.get('staff_id');
+          final staffDoc = await staffDocRef.get();
+          staffId = staffDoc.id;
+        }
 
         borrowings.add(BorrowingModel(
           id: borrowingDoc.id,
-          classId: classDoc.id,
-          majorId: majorDoc.id,
-          userId: userDoc.id,
+          classId: classId,
+          majorId: majorId,
+          userId: userId,
+          staffId: staffId,
           title: borrowingDoc.get('title'),
           description: borrowingDoc.get('title'),
           status: borrowingDoc.get('status'),
           date: (borrowingDoc.get('date') as Timestamp).toDate(),
           timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
           timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
-          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate()
+          createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate(),
+          rejectedMessage: borrowingDoc.get('rejected_message')
         ));
       }
 
@@ -193,6 +290,7 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
         classId: classDoc.id,
         majorId: majorDoc.id,
         userId: userDoc.id,
+        staffId: staffId,
         title: borrowing['title'],
         description: borrowing['description'],
         status: borrowing['status'],
@@ -216,10 +314,15 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
   @override
   Future<bool> rejectBorrowing({
     required String borrowingId,
-    required String description
+    required String staffId,
+    required String message
   }) async {
     final BorrowingFirebaseService service = BorrowingFirebaseService();
-    return await service.rejectBorrowing(borrowingId: borrowingId, description: description);
+    return await service.rejectBorrowing(
+      borrowingId: borrowingId,
+      staffId: staffId,
+      message: message
+    );
   }
   
   @override

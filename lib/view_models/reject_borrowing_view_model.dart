@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 
 class RejectBorrowingViewModel extends ChangeNotifier {
@@ -10,7 +11,7 @@ class RejectBorrowingViewModel extends ChangeNotifier {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController messageController = TextEditingController();
 
   bool _isSubmittingMessage = false;
 
@@ -36,9 +37,17 @@ class RejectBorrowingViewModel extends ChangeNotifier {
 
     if (formKey.currentState!.validate()) {
       BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
-      await repository.rejectBorrowing(borrowingId: _borrowingId, description: descriptionController.text);
+      final prefs = await SharedPreferences.getInstance();
 
-      descriptionController.clear();
+      String? staffId = prefs.getString('userId');
+
+      await repository.rejectBorrowing(
+        borrowingId: _borrowingId,
+        staffId: staffId!,
+        message: messageController.text
+      );
+
+      messageController.clear();
 
       isMessageSubmitted = true;
     }

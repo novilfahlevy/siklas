@@ -3,10 +3,12 @@ import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/models/major_model.dart';
+import 'package:siklas/models/user_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 import 'package:siklas/repositories/class_firebase_repository.dart';
 import 'package:siklas/repositories/floor_firebase_repository.dart';
 import 'package:siklas/repositories/major_firebase_repository.dart';
+import 'package:siklas/repositories/user_firebase_repository.dart';
 
 class StaffBorrowingViewModel extends ChangeNotifier {
   BorrowingModel? _borrowingModel;
@@ -45,6 +47,15 @@ class StaffBorrowingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  UserModel? _staffModel;
+
+  UserModel? get staffModel => _staffModel;
+
+  set staffModel(UserModel? staffModel) {
+    _staffModel = staffModel;
+    notifyListeners();
+  }
+
   bool _isFetchingBorrowing = true;
 
   bool get isFetchingBorrowing => _isFetchingBorrowing;
@@ -61,17 +72,20 @@ class StaffBorrowingViewModel extends ChangeNotifier {
     classModel = null;
     floorModel = null;
     majorModel = null;
+    staffModel = null;
 
     try {
       final BorrowingFirebaseRepository borrowingRepository = BorrowingFirebaseRepository();
       final ClassFirebaseRepository classRepository = ClassFirebaseRepository();
       final FloorFirebaseRepository floorRepository = FloorFirebaseRepository();
       final MajorFirebaseRepository majorRepository = MajorFirebaseRepository();
+      final UserFirebaseRepository userRepository = UserFirebaseRepository();
 
       borrowingModel = await borrowingRepository.getBorrowingById(borrowingId);
       classModel = await classRepository.getClassById(borrowingModel!.classId);
       floorModel = await floorRepository.getFloorById(classModel!.floorId);
       majorModel = await majorRepository.getMajorById(borrowingModel!.majorId);
+      staffModel = await userRepository.getUserById(borrowingModel!.staffId!);
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {
