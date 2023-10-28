@@ -14,4 +14,16 @@ class UserFirebaseService {
       return null;
     }
   }
+
+  Future<DocumentSnapshot?> getUserById(String userId) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      final user = await db.collection('users').doc(userId).get();
+      
+      return user;
+    } on Exception catch (_) {
+      // TODO
+      return null;
+    }
+  }
 }

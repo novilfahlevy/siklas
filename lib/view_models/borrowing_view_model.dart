@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/models/major_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
-import 'package:siklas/repositories/major_firebase_repository.dart';
 
 class BorrowingViewModel extends ChangeNotifier {
   BorrowingModel? _borrowing;
@@ -38,11 +37,7 @@ class BorrowingViewModel extends ChangeNotifier {
     try {
       final BorrowingFirebaseRepository borrowingRepository = BorrowingFirebaseRepository();
       _borrowing = await borrowingRepository.getBorrowingById(borrowingId);
-
-      if (_borrowing != null) {
-        final MajorFirebaseRepository majorRepository = MajorFirebaseRepository();
-        _major = await majorRepository.getMajorById(_borrowing!.majorId);
-      }
+      _major = await _borrowing!.getMajorModel();
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {

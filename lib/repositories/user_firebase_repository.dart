@@ -19,4 +19,21 @@ class UserFirebaseRepository implements UserRepositoryInterface {
 
     return null;
   }
+
+  @override
+  Future<UserModel?> getUserById(String userId) async {
+    final UserFirebaseService service = UserFirebaseService();
+    final userDoc = await service.getUserById(userId);
+
+    if (userDoc != null) {
+      return UserModel(
+        id: userDoc.id,
+        authId: userDoc.get('user_id'),
+        name: userDoc.get('name'),
+        role: userDoc.get('role')
+      );
+    }
+
+    return null;
+  }
 }

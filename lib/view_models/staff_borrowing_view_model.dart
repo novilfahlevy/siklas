@@ -57,16 +57,21 @@ class StaffBorrowingViewModel extends ChangeNotifier {
   Future<void> fetchBorrowingById(String borrowingId) async {
     isFetchingBorrowing = true;
 
+    borrowingModel = null;
+    classModel = null;
+    floorModel = null;
+    majorModel = null;
+
     try {
       final BorrowingFirebaseRepository borrowingRepository = BorrowingFirebaseRepository();
       final ClassFirebaseRepository classRepository = ClassFirebaseRepository();
       final FloorFirebaseRepository floorRepository = FloorFirebaseRepository();
       final MajorFirebaseRepository majorRepository = MajorFirebaseRepository();
 
-      _borrowingModel = await borrowingRepository.getBorrowingById(borrowingId);
-      _classModel = await classRepository.getClassById(_borrowingModel!.classId);
-      _floorModel = await floorRepository.getFloorById(_classModel!.floorId);
-      _majorModel = await majorRepository.getMajorById(_borrowingModel!.majorId);
+      borrowingModel = await borrowingRepository.getBorrowingById(borrowingId);
+      classModel = await classRepository.getClassById(borrowingModel!.classId);
+      floorModel = await floorRepository.getFloorById(classModel!.floorId);
+      majorModel = await majorRepository.getMajorById(borrowingModel!.majorId);
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {
