@@ -23,6 +23,8 @@ class _RejectBorrowingScreenState extends State<RejectBorrowingScreen> {
     super.initState();
   }
 
+  /// Display success message when the borrowing is successfully rejected,
+  /// and re-fetch the borrowing before going to the borrowing screen.
   void _messageSubmittedListener() {
     if (mounted) {
       final rejectBorrowingViewModel = Provider.of<RejectBorrowingViewModel>(context, listen: false);

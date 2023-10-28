@@ -16,17 +16,17 @@ class BorrowingsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isBorrowingsFetched = false;
+  bool _areBorrowingsFetched = false;
 
-  bool get isBorrowingsFetched => _isBorrowingsFetched;
+  bool get areBorrowingsFetched => _areBorrowingsFetched;
 
-  set isBorrowingsFetched(bool isFetched) {
-    _isBorrowingsFetched = isFetched;
+  set areBorrowingsFetched(bool isFetched) {
+    _areBorrowingsFetched = isFetched;
     notifyListeners();
   }
   
   Future<void> fetchBorrowings(String classId) async {
-    isBorrowingsFetched = false;
+    areBorrowingsFetched = false;
     isFetchingBorrowings = true;
 
     try {
@@ -35,7 +35,7 @@ class BorrowingsViewModel extends ChangeNotifier {
     } on Exception catch (_) {
       // TODO
     } finally {
-      isBorrowingsFetched = true;
+      areBorrowingsFetched = true;
       isFetchingBorrowings = false;
     }
   }

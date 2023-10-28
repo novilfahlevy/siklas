@@ -25,9 +25,11 @@ class _ClassesScreenState extends State<ClassesScreen> {
     super.initState();
   }
 
+  /// Fetch the class data before going to the class screen.
+  /// Also make sure to mark if the borrowings have not fetched yet.
   void _goToClassScreen(String classId) {
     Provider.of<ClassViewModel>(context, listen: false).fetchClass(classId);
-    Provider.of<BorrowingsViewModel>(context, listen: false).isBorrowingsFetched = false;
+    Provider.of<BorrowingsViewModel>(context, listen: false).areBorrowingsFetched = false;
 
     Navigator.pushNamed(context, ClassScreen.routePath);
   }
@@ -77,14 +79,15 @@ class _ClassesScreenState extends State<ClassesScreen> {
               );
             }
           ),
-          const SizedBox(height: 10,),
           Expanded(
             child: Consumer<ClassesViewModel>(
               builder: (context, state, _) {
+                // Display loading indicator while the classes are being fetched
                 if (state.isFetchingClasses) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
+                // Display a note when the classes are not found
                 if (state.classes.isEmpty) {
                   return Center(
                     child: Text(
@@ -98,7 +101,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
                   shrinkWrap: true,
                   itemCount: state.classes.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    final classCard = GestureDetector(
                       onTap: () => _goToClassScreen(state.classes[index].id),
                       child: Card(
                         child: Padding(
@@ -159,6 +162,26 @@ class _ClassesScreenState extends State<ClassesScreen> {
                         )
                       ),
                     );
+
+                    if (index == 0) {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 10,),
+                          classCard
+                        ],
+                      );
+                    }
+
+                    if (index == state.classes.length - 1) {
+                      return Column(
+                        children: [
+                          classCard,
+                          const SizedBox(height: 10,),
+                        ],
+                      );
+                    }
+
+                    return classCard;
                   }
                 );
               }

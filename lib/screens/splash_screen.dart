@@ -4,6 +4,7 @@ import 'package:siklas/models/user_model.dart';
 import 'package:siklas/screens/classes_screen.dart';
 import 'package:siklas/screens/login_screen.dart';
 import 'package:siklas/screens/staff_borrowings_screen.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/view_models/login_view_model.dart';
 import 'package:siklas/view_models/splash_view_model.dart';
 
@@ -48,10 +49,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return SafeArea(
       child: Container(
         color: Colors.white,
-        child: const Center(
-          child: CircularProgressIndicator(
-            strokeAlign: 12.0,
-            strokeWidth: 6.0,
+        child: Center(
+          child: LoadingCircular(
+            size: 60,
+            color: Theme.of(context).colorScheme.primary
           )
         )
       ),

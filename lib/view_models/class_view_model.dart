@@ -4,7 +4,7 @@ import 'package:siklas/models/floor_model.dart';
 import 'package:siklas/repositories/class_firebase_repository.dart';
 import 'package:siklas/repositories/floor_firebase_repository.dart';
 import 'package:siklas/screens/borrowings_screen.dart';
-import 'package:siklas/screens/schedule_screen.dart';
+import 'package:siklas/screens/schedules_screen.dart';
 
 class ClassViewModel extends ChangeNotifier {
   ClassModel? _class;
@@ -16,7 +16,7 @@ class ClassViewModel extends ChangeNotifier {
   FloorModel? get floorModel => _floor;
 
   final List<Widget> _screens = [
-    const ScheduleScreen(),
+    const SchedulesScreen(),
     const BorrowingsScreen()
   ];
 

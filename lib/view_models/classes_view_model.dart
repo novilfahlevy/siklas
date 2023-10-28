@@ -44,10 +44,14 @@ class ClassesViewModel extends ChangeNotifier {
     if (_selectedFloor != null) {
       isFetchingClasses = true;
 
-      final ClassFirebaseRepository repository = ClassFirebaseRepository();
-      _classes = await repository.getClassesByFloorId(_selectedFloor!.id);
-      
-      isFetchingClasses = false;
+      try {
+        final ClassFirebaseRepository repository = ClassFirebaseRepository();
+        _classes = await repository.getClassesByFloorId(_selectedFloor!.id);
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+      } finally {
+        isFetchingClasses = false;
+      }
     }
   }
 }

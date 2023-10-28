@@ -28,11 +28,12 @@ class _MainScreenState extends State<MainScreen> {
 
   void _showUserBorrowingsScreenListener() {
     if (mounted) {
+      final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
       final mainViewModel = Provider.of<MainViewModel>(context, listen: false);
       final userBorrowingsViewModel = Provider.of<BorrowingHistoriesViewModel>(context, listen: false);
 
-      if (mainViewModel.selectedScreenIndex == 1 && !userBorrowingsViewModel.isBorrowingsFetched) {
-        userBorrowingsViewModel.fetchBorrowingsByUserId();
+      if (mainViewModel.selectedScreenIndex == 1 && !userBorrowingsViewModel.areBorrowingsFetched) {
+        userBorrowingsViewModel.fetchBorrowingsByUserId(loginViewModel.userModel!.id);
       }
     }
   }
