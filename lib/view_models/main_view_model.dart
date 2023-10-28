@@ -14,15 +14,10 @@ class MainViewModel extends ChangeNotifier {
 
   set selectedScreenIndex(int index) {
     _selectedScreenIndex = index;
-    _isScreenEverChanged = true;
     notifyListeners();
   }
 
   String get currentScreenTitle => _screens[_selectedScreenIndex]['title'];
 
   Widget get currentScreen => _screens[_selectedScreenIndex]['screen'];
-
-  bool _isScreenEverChanged = false;
-  
-  bool get isScreenEverChanged => _isScreenEverChanged;
 }

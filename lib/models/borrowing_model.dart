@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/major_model.dart';
 import 'package:siklas/models/user_model.dart';
-import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 import 'package:siklas/repositories/class_firebase_repository.dart';
 import 'package:siklas/repositories/major_firebase_repository.dart';
 import 'package:siklas/repositories/user_firebase_repository.dart';

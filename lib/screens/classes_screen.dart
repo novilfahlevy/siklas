@@ -7,7 +7,6 @@ import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/view_models/borrowings_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/view_models/classes_view_model.dart';
-import 'package:siklas/view_models/main_view_model.dart';
 
 class ClassesScreen extends StatefulWidget {
   static const String routePath = '/classes';
@@ -21,11 +20,7 @@ class ClassesScreen extends StatefulWidget {
 class _ClassesScreenState extends State<ClassesScreen> {
   @override
   void initState() {
-    final MainViewModel mainViewModel = Provider.of<MainViewModel>(context, listen: false);
-
-    if (!mainViewModel.isScreenEverChanged) {
-      Provider.of<ClassesViewModel>(context, listen: false).fetchFloors();
-    }
+    Provider.of<ClassesViewModel>(context, listen: false).fetchFloors();
 
     super.initState();
   }
@@ -34,10 +29,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
     Provider.of<ClassViewModel>(context, listen: false).fetchClass(classId);
     Provider.of<BorrowingsViewModel>(context, listen: false).isBorrowingsFetched = false;
 
-    Navigator.pushNamed(
-      context,
-      ClassScreen.routePath,
-    );
+    Navigator.pushNamed(context, ClassScreen.routePath);
   }
 
   @override
@@ -125,6 +117,14 @@ class _ClassesScreenState extends State<ClassesScreen> {
                                         fit: BoxFit.cover,
                                         height: 200,
                                         width: double.infinity,
+                                        loadingBuilder: (context, child, loadingProgress) =>
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 10),
+                                            child: LoadingCircular(
+                                              size: 50,
+                                              color: Theme.of(context).colorScheme.primary,
+                                            )
+                                          ),
                                       );
                                     }
 

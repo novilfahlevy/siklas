@@ -159,6 +159,10 @@ class _ClassScreenState extends State<ClassScreen> {
       ),
       floatingActionButton: Consumer<ClassViewModel>(
         builder: (context, state, _) {
+          if (state.isFetchingClass) {
+            return const Text('');
+          }
+
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: double.infinity,
