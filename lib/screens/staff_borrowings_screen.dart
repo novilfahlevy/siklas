@@ -27,6 +27,7 @@ class _StaffBorrowingsScreenState extends State<StaffBorrowingsScreen> {
     super.initState();
   }
 
+  /// Fetch the borrowing before going to the borrowing screen.
   void _goToStaffBorrowingScreen(String borrowingId) {
     Provider
       .of<StaffBorrowingViewModel>(context, listen: false)

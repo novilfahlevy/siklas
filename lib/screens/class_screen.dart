@@ -27,6 +27,8 @@ class _ClassScreenState extends State<ClassScreen> {
     super.initState();
   }
 
+  /// Make sure if the schedules are fetched only once
+  /// when the class screen has opened and the class data is already fetched.
   void _isClassFetchedListener() {
     if (mounted) {
       final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
@@ -40,18 +42,23 @@ class _ClassScreenState extends State<ClassScreen> {
     }
   }
 
+  /// Fetch the borrowings data when 'Peminjaman' tab is selected.
+  /// Also make sure if the borrowings are fetched only once.
   void _showBorrowingsScreenListener() {
     if (mounted) {
       final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
       final borrowingViewModel = Provider.of<BorrowingsViewModel>(context, listen: false);
 
-      if (classViewModel.selectedScreenIndex == 1 && !borrowingViewModel.isBorrowingsFetched) {
+      if (classViewModel.selectedScreenIndex == 1 && !borrowingViewModel.areBorrowingsFetched) {
         borrowingViewModel.fetchBorrowings(classViewModel.classModel!.id);
-        borrowingViewModel.isBorrowingsFetched = true;
+        borrowingViewModel.areBorrowingsFetched = true;
       }
     }
   }
 
+  /// Fetch major options in the create borrowing view model,
+  /// set the class model to the create borrowing view model,
+  /// and then go to the create borrowing screen.
   void _goToCreateBorrowingScreen() {
     final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
     final classViewModel = Provider.of<ClassViewModel>(context, listen: false);
@@ -68,8 +75,14 @@ class _ClassScreenState extends State<ClassScreen> {
       appBar: AppBar(),
       body: Consumer<ClassViewModel>(
         builder: (context, state, _) {
+          // Display loading indicator while the class is being fetched.
           if (state.isFetchingClass) {
             return const Center(child: CircularProgressIndicator());
+          }
+
+          // Display a note if the class is not found
+          if (state.classModel == null) {
+            return const Center(child: Text('Kelas tidak ditemukan'));
           }
 
           return Column(
@@ -159,8 +172,9 @@ class _ClassScreenState extends State<ClassScreen> {
       ),
       floatingActionButton: Consumer<ClassViewModel>(
         builder: (context, state, _) {
+          // Display nothing while the class is being fetched
           if (state.isFetchingClass) {
-            return const Text('');
+            return const SizedBox.shrink();
           }
 
           return Container(

@@ -16,6 +16,7 @@ class BorrowingHistoriesScreen extends StatefulWidget {
 }
 
 class _BorrowingHistoriesScreenState extends State<BorrowingHistoriesScreen> {
+  /// Fetch the selected borrowing before going to the borrowing screen.
   void _goToDetailBorrowingScreen(String borrowingId) {
     Provider
       .of<BorrowingHistoryViewModel>(context, listen: false)
@@ -30,6 +31,7 @@ class _BorrowingHistoriesScreenState extends State<BorrowingHistoriesScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Consumer<BorrowingHistoriesViewModel>(
         builder: (context, state, _) {
+          // Display the loading indicator while the borrowings are being fetched.
           if (state.isFetchingBorrowings) {
             return Center(
               child: LoadingCircular(
@@ -39,6 +41,7 @@ class _BorrowingHistoriesScreenState extends State<BorrowingHistoriesScreen> {
             );
           }
 
+          // Display a note when there are no borrowings
           if (state.borrowings.isEmpty) {
             return Center(
               child: Text(

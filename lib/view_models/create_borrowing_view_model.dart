@@ -95,8 +95,17 @@ class CreateBorrowingViewModel extends ChangeNotifier {
 
   bool get isBorrowingCreated => _isBorrowingCreated;
 
-  set isBorrowingCreated(bool isSubmitting) {
-    _isBorrowingCreated = isSubmitting;
+  set isBorrowingCreated(bool isCreated) {
+    _isBorrowingCreated = isCreated;
+    notifyListeners();
+  }
+
+  bool _isFailedToCreateBorrowing = false;
+
+  bool get isFailedToCreateBorrowing => _isFailedToCreateBorrowing;
+
+  set isFailedToCreateBorrowing(bool isFailed) {
+    _isFailedToCreateBorrowing = isFailed;
     notifyListeners();
   }
 
@@ -108,8 +117,8 @@ class CreateBorrowingViewModel extends ChangeNotifier {
       _majors = await repository.getMajors();
       
       selectedMajor = firstMajor;
-    } on Exception catch (_) {
-      // TODO
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
       isFetchingMajors = false;
     }
@@ -122,6 +131,7 @@ class CreateBorrowingViewModel extends ChangeNotifier {
     if (isTimeValid && isFormValid) {
       isSubmittingBorrowing = true;
       isBorrowingCreated = false;
+      isFailedToCreateBorrowing = false;
 
       final prefs = await SharedPreferences.getInstance();
       String? userId = prefs.getString('userId');
@@ -140,8 +150,10 @@ class CreateBorrowingViewModel extends ChangeNotifier {
       );
 
       if (borrowing != null) {
-        clearForm();
         isBorrowingCreated = true;
+        clearForm();
+      } else {
+        isFailedToCreateBorrowing = true;
       }
 
       isSubmittingBorrowing = false;

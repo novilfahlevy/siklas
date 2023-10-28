@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
 
@@ -17,29 +16,26 @@ class BorrowingHistoriesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isBorrowingsFetched = false;
+  bool _areBorrowingsFetched = false;
 
-  bool get isBorrowingsFetched => _isBorrowingsFetched;
+  bool get areBorrowingsFetched => _areBorrowingsFetched;
 
-  set isBorrowingsFetched(bool isFetched) {
-    _isBorrowingsFetched = isFetched;
+  set areBorrowingsFetched(bool isFetched) {
+    _areBorrowingsFetched = isFetched;
     notifyListeners();
   }
   
-  Future<void> fetchBorrowingsByUserId() async {
-    isBorrowingsFetched = false;
+  Future<void> fetchBorrowingsByUserId(String userId) async {
+    areBorrowingsFetched = false;
     isFetchingBorrowings = true;
 
     try {
       final BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
-      final prefs = await SharedPreferences.getInstance();
-      
-      final userId = prefs.getString('userId');
-      _borrowings = await repository.getBorrowingsByUserId(userId!);
+      _borrowings = await repository.getBorrowingsByUserId(userId);
 
-      isBorrowingsFetched = _borrowings.isNotEmpty;
-    } on Exception catch (_) {
-      // TODO
+      areBorrowingsFetched = _borrowings.isNotEmpty;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
       isFetchingBorrowings = false;
     }

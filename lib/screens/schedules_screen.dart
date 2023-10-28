@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:siklas/screens/widgets/tag.dart';
 import 'package:siklas/view_models/schedule_view_model.dart';
 
-class ScheduleScreen extends StatefulWidget {
-  const ScheduleScreen({super.key});
+class SchedulesScreen extends StatefulWidget {
+  const SchedulesScreen({super.key});
 
   @override
-  State<ScheduleScreen> createState() => _ScheduleScreenState();
+  State<SchedulesScreen> createState() => _SchedulesScreenState();
 }
 
-class _ScheduleScreenState extends State<ScheduleScreen> {
+class _SchedulesScreenState extends State<SchedulesScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(

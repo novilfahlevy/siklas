@@ -19,11 +19,10 @@ class StaffBorrowingScreen extends StatefulWidget {
 
 class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
   void _goToRejectBorrowingScreen() {
-    Provider
-      .of<RejectBorrowingViewModel>(context, listen: false)
-      .borrowingId = Provider
-        .of<StaffBorrowingViewModel>(context, listen: false)
-        .borrowingModel!.id;
+    final staffBorrowingViewModel = Provider.of<StaffBorrowingViewModel>(context, listen: false);
+    final rejectBorrowingViewModel = Provider.of<RejectBorrowingViewModel>(context, listen: false);
+    
+    rejectBorrowingViewModel.borrowingId = staffBorrowingViewModel.borrowingModel!.id;
     
     Navigator.pushNamed(context, RejectBorrowingScreen.routePath);
   }
@@ -58,12 +57,11 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
     Navigator.pop(context);
     
     final staffBorrowingViewModel = Provider.of<StaffBorrowingViewModel>(context, listen: false);
-
-    await staffBorrowingViewModel.acceptBorrowing();
-
-    _showAcceptBorrowingSuccessMessage();
     
+    await staffBorrowingViewModel.acceptBorrowing();
     staffBorrowingViewModel.fetchBorrowingById(staffBorrowingViewModel.borrowingModel!.id);
+    
+    _showAcceptBorrowingSuccessMessage();
   }
 
   void _showAcceptBorrowingSuccessMessage() {
@@ -90,10 +88,12 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
         appBar: AppBar(),
         body: Consumer<StaffBorrowingViewModel>(
           builder: (context, state, _) {
+            // Display loading indicator while the borrowing is being fetched
             if (state.isFetchingBorrowing) {
               return const Center(child: CircularProgressIndicator());
             }
     
+            // Display a note when the borrowing is not found
             if (state.borrowingModel == null) {
               return const Center(child: Text('Peminjaman tidak ditemukan'));
             }
@@ -232,8 +232,9 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
         ),
         floatingActionButton: Consumer<StaffBorrowingViewModel>(
           builder: (context, state, _) {
+            // Display nothing while the borrowing is being fetched
             if (state.isFetchingBorrowing) {
-              return const Text('');
+              return const SizedBox.shrink();
             }
     
             if (state.borrowingModel!.status == 0) {
@@ -272,7 +273,7 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
               );
             }
     
-            return const Text('');
+            return const SizedBox.shrink();
           }
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

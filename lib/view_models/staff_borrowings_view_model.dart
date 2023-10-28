@@ -20,8 +20,8 @@ class StaffBorrowingsViewModel extends ChangeNotifier {
     try {
       final BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
       _borrowings = await repository.getNotYetRespondedBorrowings();
-    } on Exception catch (_) {
-      // TODO
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
       isFetchingBorrowings = false;
     }

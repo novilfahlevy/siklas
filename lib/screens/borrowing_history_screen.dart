@@ -5,6 +5,7 @@ import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/screens/widgets/tag.dart';
 import 'package:siklas/view_models/borrowing_histories_view_model.dart';
 import 'package:siklas/view_models/borrowing_history_view_model.dart';
+import 'package:siklas/view_models/login_view_model.dart';
 
 class BorrowingHistoryScreen extends StatefulWidget {
   static const String routePath = '/borrowing-history';
@@ -54,10 +55,12 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
 
         // Back to borrowing histories screen
         Navigator.pop(context);
+
+        final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
         
         Provider
           .of<BorrowingHistoriesViewModel>(context, listen: false)
-          .fetchBorrowingsByUserId();
+          .fetchBorrowingsByUserId(loginViewModel.userModel!.id);
       });
   }
 
@@ -140,24 +143,19 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
                             )
                           ],
                         ),
-                        Builder(
-                          builder: (context) {
-                            if (state.borrowingModel!.status == 1) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 30,),
-                                  Text('Keterangan penolakan', style: Theme.of(context).textTheme.titleSmall,),
-                                  const SizedBox(height: 10,),
-                                  Text(state.borrowingModel!.rejectedMessage!, style: Theme.of(context).textTheme.bodyLarge,),
-                                  const SizedBox(height: 30,),
-                                ],
-                              );
-                            }
-
-                            return const Text('');
-                          },
+                        Visibility(
+                          visible: state.borrowingModel!.status == 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 30,),
+                              Text('Keterangan penolakan', style: Theme.of(context).textTheme.titleSmall,),
+                              const SizedBox(height: 10,),
+                              Text(state.borrowingModel!.rejectedMessage!, style: Theme.of(context).textTheme.bodyLarge,),
+                            ],
+                          )
                         ),
+                        const SizedBox(height: 30,),
                         Text('Tanggal pengajuan', style: Theme.of(context).textTheme.titleSmall,),
                         const SizedBox(height: 10,),
                         Row(
@@ -220,8 +218,10 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
       ),
       floatingActionButton: Consumer<BorrowingHistoryViewModel>(
         builder: (context, state, _) {
+          // Display nothing while borrowings are being fetched
+          // and when the borrowing has been responded (the status is not 0)
           if (state.isFetchingBorrowing || state.borrowingModel!.status != 0) {
-            return const Text('');
+            return const SizedBox.shrink();
           }
 
           return Container(

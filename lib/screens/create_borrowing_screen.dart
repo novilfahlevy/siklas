@@ -29,6 +29,8 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
     super.initState();
   }
 
+  /// Show the success message if the borrowing has been created,
+  /// and then go to the main screen, specificly to the borrowing histories screen.
   void _borrowingCreatedListener() {
     if (mounted) {
       final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
@@ -54,14 +56,15 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
       appBar: AppBar(
         title: Consumer<ClassViewModel>(
           builder: (context, state, _) {
-            if (state.classModel != null) {
-              return Text(
-                'Pinjam kelas ${state.classModel!.name}',
-                style: Theme.of(context).textTheme.titleMedium,
-              );
+            // Display empty text if the class is not found
+            if (state.classModel == null) {
+              return const Text('');
             }
 
-            return const Text('-');
+            return Text(
+              'Pinjam kelas ${state.classModel!.name}',
+              style: Theme.of(context).textTheme.titleMedium,
+            );
           }
         ),
       ),
