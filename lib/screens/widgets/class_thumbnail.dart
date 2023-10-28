@@ -34,19 +34,24 @@ class ClassThumbnail extends StatelessWidget {
                     fit: BoxFit.cover,
                     width: thumbnailSize,
                     height: 100,
-                    loadingBuilder: (context, child, loadingProgress) =>
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        color: Colors.black12,
-                        width: thumbnailSize,
-                        height: 100,
-                        child: Center(
-                          child: LoadingCircular(
-                            size: 20,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        )
-                      ),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress != null) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          color: Colors.black12,
+                          width: thumbnailSize,
+                          height: 100,
+                          child: Center(
+                            child: LoadingCircular(
+                              size: 20,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          )
+                        );
+                      }
+
+                      return child;
+                    },
                   );
                 }
 

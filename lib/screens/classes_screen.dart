@@ -117,14 +117,19 @@ class _ClassesScreenState extends State<ClassesScreen> {
                                         fit: BoxFit.cover,
                                         height: 200,
                                         width: double.infinity,
-                                        loadingBuilder: (context, child, loadingProgress) =>
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 10),
-                                            child: LoadingCircular(
-                                              size: 50,
-                                              color: Theme.of(context).colorScheme.primary,
-                                            )
-                                          ),
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if (loadingProgress != null) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 10),
+                                              child: LoadingCircular(
+                                                size: 50,
+                                                color: Theme.of(context).colorScheme.primary,
+                                              )
+                                            );
+                                          }
+
+                                          return child;
+                                        },
                                       );
                                     }
 

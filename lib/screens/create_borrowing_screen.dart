@@ -155,33 +155,26 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
                       ),
                     ],
                   ),
-                  Builder(
-                    builder: (_) {
-                      if (!state.isTimeValid) {
-                        return Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 8,),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  'Waktu tidak valid',
-                                  style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(color: Theme.of(context).colorScheme.error),
-                                )
-                              ),
-                              const SizedBox(height: 20,),
-                            ],
-                          ),
-                        );
-                      }
-
-                      return const SizedBox(height: 20);
-                    },
+                  Visibility(
+                    visible: !state.isTimeValid,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 8,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Waktu tidak valid',
+                            style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: Theme.of(context).colorScheme.error),
+                          )
+                        ),
+                      ],
+                    )
                   ),
+                  const SizedBox(height: 20,),
                   ElevatedButton(
                     onPressed: state.isSubmittingBorrowing ? null : state.submitBorrowing,
                     child: state.isSubmittingBorrowing
