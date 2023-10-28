@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
+import 'package:siklas/screens/widgets/loading_circular.dart';
 
 class ClassThumbnail extends StatelessWidget {
   final ClassModel? classModel;
@@ -32,6 +33,25 @@ class ClassThumbnail extends StatelessWidget {
                     snapshot.data!,
                     fit: BoxFit.cover,
                     width: thumbnailSize,
+                    height: 100,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress != null) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          color: Colors.black12,
+                          width: thumbnailSize,
+                          height: 100,
+                          child: Center(
+                            child: LoadingCircular(
+                              size: 20,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          )
+                        );
+                      }
+
+                      return child;
+                    },
                   );
                 }
 

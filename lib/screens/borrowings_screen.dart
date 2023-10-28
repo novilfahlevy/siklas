@@ -13,7 +13,7 @@ class BorrowingsScreen extends StatefulWidget {
 }
 
 class _BorrowingsScreenState extends State<BorrowingsScreen> {
-  void _goToDetailBorrowingScreen(String borrowingId) {
+  void _goToBorrowingScreen(String borrowingId) {
     Provider
       .of<BorrowingViewModel>(context, listen: false)
       .fetchBorrowingById(borrowingId);
@@ -45,7 +45,7 @@ class _BorrowingsScreenState extends State<BorrowingsScreen> {
               Padding(
                 padding: EdgeInsets.only(top: index == 0 ? 8 : 0),
                 child: GestureDetector(
-                  onTap: () => _goToDetailBorrowingScreen(state.borrowings[index].id),
+                  onTap: () => _goToBorrowingScreen(state.borrowings[index].id),
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16),

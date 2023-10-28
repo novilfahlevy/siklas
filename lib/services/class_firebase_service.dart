@@ -6,6 +6,7 @@ class ClassFirebaseService {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       final users = await db.collection('classes')
         .where('floor_id', isEqualTo: FirebaseFirestore.instance.doc('floors/$floorId'))
+        .orderBy('name')
         .get();
       
       return users.docs;
