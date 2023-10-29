@@ -15,25 +15,13 @@ class BorrowingHistoriesViewModel extends ChangeNotifier {
     _isFetchingBorrowings = isFetching;
     notifyListeners();
   }
-
-  bool _areBorrowingsFetched = false;
-
-  bool get areBorrowingsFetched => _areBorrowingsFetched;
-
-  set areBorrowingsFetched(bool isFetched) {
-    _areBorrowingsFetched = isFetched;
-    notifyListeners();
-  }
   
   Future<void> fetchBorrowingsByUserId(String userId) async {
-    areBorrowingsFetched = false;
     isFetchingBorrowings = true;
 
     try {
       final BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
       _borrowings = await repository.getBorrowingsByUserId(userId);
-
-      areBorrowingsFetched = _borrowings.isNotEmpty;
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {

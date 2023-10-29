@@ -306,9 +306,90 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
   }
   
   @override
-  Future<bool> acceptBorrowing(String borrowingId) async {
+  Future<dynamic> checkIfBorrowingTimeIsUsed({
+    required String classId,
+    required DateTime date,
+    required TimeOfDay timeFrom,
+    required TimeOfDay timeUntil
+  }) async {
     final BorrowingFirebaseService service = BorrowingFirebaseService();
-    return await service.acceptBorrowing(borrowingId);
+
+    final borrowingDoc = await service.checkIfBorrowingTimeHasBooked(
+      classId: classId,
+      date: date,
+      timeFrom: timeFrom,
+      timeUntil: timeUntil
+    );
+
+    if (borrowingDoc != null) {
+      final borrowingMap = borrowingDoc.data() as Map<String, dynamic>;
+
+      String classId = '';
+      String majorId = '';
+      String userId = '';
+      String staffId = '';
+
+      if (borrowingMap.containsKey('class_id')) {
+        final classDocRef = borrowingDoc.get('class_id');
+        final classDoc = await classDocRef.get();
+        classId = classDoc.id;
+      }
+
+      if (borrowingMap.containsKey('major_id')) {
+        final majorDocRef = borrowingDoc.get('major_id');
+        final majorDoc = await majorDocRef.get();
+        majorId = majorDoc.id;
+      }
+
+      if (borrowingMap.containsKey('user_id')) {
+        final userDocRef = borrowingDoc.get('user_id');
+        final userDoc = await userDocRef.get();
+        userId = userDoc.id;
+      }
+
+      if (borrowingMap.containsKey('staff_id')) {
+        final staffDocRef = borrowingDoc.get('staff_id');
+        final staffDoc = await staffDocRef.get();
+        staffId = staffDoc.id;
+      }
+
+      return BorrowingModel(
+        id: borrowingDoc.id,
+        classId: classId,
+        majorId: majorId,
+        userId: userId,
+        staffId: staffId,
+        title: borrowingDoc.get('title'),
+        description: borrowingDoc.get('description'),
+        status: borrowingDoc.get('status'),
+        date: (borrowingDoc.get('date') as Timestamp).toDate(),
+        timeFrom: TimeOfDay.fromDateTime((borrowingDoc.get('time_from') as Timestamp).toDate()),
+        timeUntil: TimeOfDay.fromDateTime((borrowingDoc.get('time_until') as Timestamp).toDate()),
+        createdAt: (borrowingDoc.get('created_at') as Timestamp).toDate(),
+        rejectedMessage: borrowingDoc.get('rejected_message')
+      );
+    }
+
+    final isBorrowingTimeSameAsClassSchedule = await service.checkIfBorrowingTimeIsSameAsClassSchedule(
+      classId: classId,
+      date: date,
+      timeFrom: timeFrom,
+      timeUntil: timeUntil
+    );
+
+    return isBorrowingTimeSameAsClassSchedule;
+  }
+  
+  @override
+  Future<bool> acceptBorrowing({
+    required String borrowingId,
+    required String staffId,
+  }) async {
+    final BorrowingFirebaseService service = BorrowingFirebaseService();
+    return await service.acceptBorrowing(
+      borrowingId: borrowingId,
+      staffId: staffId,
+    );
   }
 
   @override

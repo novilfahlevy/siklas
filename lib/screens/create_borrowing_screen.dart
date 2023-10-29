@@ -1,10 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/models/major_model.dart';
+import 'package:siklas/screens/borrowing_screen.dart';
 import 'package:siklas/screens/main_screen.dart';
 import 'package:siklas/screens/widgets/loading_circular.dart';
 import 'package:siklas/screens/widgets/timepicker.dart';
+import 'package:siklas/view_models/borrowing_view_model.dart';
 import 'package:siklas/view_models/class_view_model.dart';
 import 'package:siklas/screens/widgets/datepicker.dart';
 import 'package:siklas/view_models/create_borrowing_view_model.dart';
@@ -23,10 +26,61 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
   @override
   void initState() {
     if (mounted) {
+      context.read<CreateBorrowingViewModel>().addListener(_borrowingTimeHasBookedListener);
       context.read<CreateBorrowingViewModel>().addListener(_borrowingCreatedListener);
     }
 
     super.initState();
+  }
+
+  void _borrowingTimeHasBookedListener() {
+    if (mounted) {
+      final createBorrowingViewModel = Provider.of<CreateBorrowingViewModel>(context, listen: false);
+      dynamic schduleOrBookedBorrowing = createBorrowingViewModel.sameTimeScheduleOrBookedBorrowing;
+
+      if (createBorrowingViewModel.sameTimeScheduleOrBookedBorrowing != false) {
+        bool isItBorrowing = schduleOrBookedBorrowing is BorrowingModel;
+
+        ScaffoldMessenger
+          .of(context)
+          .showSnackBar(SnackBar(
+            content: GestureDetector(
+              onTap: () => isItBorrowing ? _goToBorrowingScreen(schduleOrBookedBorrowing.id) : null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isItBorrowing
+                      ? 'Mohon maaf, kelas sudah dipinjam pada waktu tersebut.'
+                      : 'Mohon maaf, terdapat jadwal rutin pada waktu tersebut.'
+                  ),
+                  Visibility(
+                    visible: isItBorrowing,
+                    child: const SizedBox(height: 5,)
+                  ),
+                  Visibility(
+                    visible: isItBorrowing,
+                    child: const Text('Tekan untuk lihat peminjaman.', style: TextStyle(
+                      fontSize: 12,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                    )),
+                  ),
+                ],
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error
+          ));
+      }
+    }
+  }
+
+  void _goToBorrowingScreen(String borrowingId) {
+    Provider
+      .of<BorrowingViewModel>(context, listen: false)
+      .fetchBorrowingById(borrowingId);
+
+    Navigator.pushNamed(context, BorrowingScreen.routePath);
   }
 
   /// Show the success message if the borrowing has been created,
@@ -40,8 +94,6 @@ class _CreateBorrowingScreenState extends State<CreateBorrowingScreen> {
         ScaffoldMessenger
           .of(context)
           .showSnackBar(const SnackBar(content: Text('Peminjaman berhasil dibuat.')));
-
-        createBorrowingViewModel.isBorrowingCreated = false;
 
         mainViewModel.selectedScreenIndex = 1;
 

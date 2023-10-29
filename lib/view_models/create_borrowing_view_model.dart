@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/major_model.dart';
 import 'package:siklas/repositories/borrowing_firebase_repository.dart';
@@ -95,18 +94,30 @@ class CreateBorrowingViewModel extends ChangeNotifier {
 
   bool get isBorrowingCreated => _isBorrowingCreated;
 
-  set isBorrowingCreated(bool isCreated) {
-    _isBorrowingCreated = isCreated;
+  void notifyThatTheBorrowingIsCreated() {
+    _isBorrowingCreated = true;
     notifyListeners();
+    _isBorrowingCreated = false;
+  }
+
+  dynamic _sameTimeScheduleOrBookedBorrowing = false;
+
+  dynamic get sameTimeScheduleOrBookedBorrowing => _sameTimeScheduleOrBookedBorrowing;
+
+  void notifyThatTheTimeIsUsed(dynamic matchScheduleOrBookedBorrowing) {
+    _sameTimeScheduleOrBookedBorrowing = matchScheduleOrBookedBorrowing;
+    notifyListeners();
+    _sameTimeScheduleOrBookedBorrowing = false;
   }
 
   bool _isFailedToCreateBorrowing = false;
 
   bool get isFailedToCreateBorrowing => _isFailedToCreateBorrowing;
 
-  set isFailedToCreateBorrowing(bool isFailed) {
-    _isFailedToCreateBorrowing = isFailed;
+  void notifyThatTheBorrowingIsFailedToCreate() {
+    _isFailedToCreateBorrowing = true;
     notifyListeners();
+    _isFailedToCreateBorrowing = false;
   }
 
   Future<void> fetchMajors() async {
@@ -130,30 +141,40 @@ class CreateBorrowingViewModel extends ChangeNotifier {
     
     if (isTimeValid && isFormValid) {
       isSubmittingBorrowing = true;
-      isBorrowingCreated = false;
-      isFailedToCreateBorrowing = false;
 
       final prefs = await SharedPreferences.getInstance();
       String? userId = prefs.getString('userId');
 
       final BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
-      final BorrowingModel? borrowing = await repository.createBorrowing(
+
+      final sameTimeScheduleOrBookedBorrowing = await repository.checkIfBorrowingTimeIsUsed(
         classId: currentClass!.id,
-        majorId: selectedMajor!.id,
-        userId: userId!,
-        title: titleController.text,
-        description: descriptionController.text,
-        status: 0,
         date: date,
         timeFrom: timeFrom,
-        timeUntil: timeUntil,
+        timeUntil: timeUntil
       );
 
-      if (borrowing != null) {
-        isBorrowingCreated = true;
-        clearForm();
+      if (sameTimeScheduleOrBookedBorrowing == false) {
+        final borrowing = await repository.createBorrowing(
+          classId: currentClass!.id,
+          majorId: selectedMajor!.id,
+          userId: userId!,
+          title: titleController.text,
+          description: descriptionController.text,
+          status: 0,
+          date: date,
+          timeFrom: timeFrom,
+          timeUntil: timeUntil,
+        );
+
+        if (borrowing != null) {
+          notifyThatTheBorrowingIsCreated();
+          clearForm();
+        } else {
+          notifyThatTheBorrowingIsFailedToCreate();
+        }
       } else {
-        isFailedToCreateBorrowing = true;
+        notifyThatTheTimeIsUsed(sameTimeScheduleOrBookedBorrowing);
       }
 
       isSubmittingBorrowing = false;
