@@ -32,8 +32,8 @@ class BorrowingsViewModel extends ChangeNotifier {
     try {
       final BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
       _borrowings = await repository.getBorrowingsByClassId(classId);
-    } on Exception catch (_) {
-      // TODO
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     } finally {
       areBorrowingsFetched = true;
       isFetchingBorrowings = false;

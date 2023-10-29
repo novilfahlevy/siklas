@@ -24,7 +24,17 @@ abstract class BorrowingRepositoryInterface {
     String? rejectedMessage
   });
 
-  Future<bool> acceptBorrowing(String borrowingId);
+  Future<dynamic> checkIfBorrowingTimeIsUsed({
+    required String classId,
+    required DateTime date,
+    required TimeOfDay timeFrom,
+    required TimeOfDay timeUntil
+  });
+
+  Future<bool> acceptBorrowing({
+    required String borrowingId,
+    required String staffId,
+  });
 
   Future<bool> rejectBorrowing({
     required String borrowingId,

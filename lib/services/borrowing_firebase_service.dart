@@ -88,7 +88,7 @@ class BorrowingFirebaseService {
         'title': title,
         'description': description,
         'status': status,
-        'date': Timestamp.fromDate(date),
+        'date': Timestamp.fromDate(DateTime(date.year, date.month, date.day, 0, 0, 0)),
         'time_from': Timestamp.fromDate(DateTime(date.year, date.month, date.day, timeFrom.hour, timeFrom.minute)),
         'time_until': Timestamp.fromDate(DateTime(date.year, date.month, date.day, timeUntil.hour, timeUntil.minute)),
         'created_at': now,
@@ -112,6 +112,181 @@ class BorrowingFirebaseService {
     }
   }
 
+  Future<QueryDocumentSnapshot?> checkIfBorrowingTimeHasBooked({
+    required String classId,
+    required DateTime date,
+    required TimeOfDay timeFrom,
+    required TimeOfDay timeUntil
+  }) async {
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+
+      final newBorrowingTimeFrom = DateTime(date.year, date.month, date.day, timeFrom.hour, timeFrom.minute);
+      final newBorrowingTimeUntil = DateTime(date.year, date.month, date.day, timeUntil.hour, timeUntil.minute);
+
+      final classDocRef = FirebaseFirestore.instance.doc('classes/$classId');
+
+      final startOfDay = DateTime(date.year, date.month, date.day);
+      final endOfDay = startOfDay.add(const Duration(days: 1));
+
+      final borrowings = await db.collection('borrowings')
+        .where('class_id', isEqualTo: classDocRef)
+        .where('status', isEqualTo: 2)
+        .where('date', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+        .where('date', isLessThan: Timestamp.fromDate(endOfDay))
+        .get();
+
+      for (final doc in borrowings.docs) {
+        final existedBorrowingTimeFrom = (doc.get('time_from') as Timestamp).toDate();
+        final existedBorrowingTimeUntil = (doc.get('time_until') as Timestamp).toDate();
+
+        if (
+          newBorrowingTimeFrom.isAtSameMomentAs(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isBefore(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+
+        if (
+          newBorrowingTimeFrom.isAtSameMomentAs(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isAtSameMomentAs(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+        
+        if (
+          newBorrowingTimeFrom.isAtSameMomentAs(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isAfter(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+
+        if (
+          newBorrowingTimeFrom.isBefore(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isAfter(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isBefore(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+        
+        if (
+          newBorrowingTimeFrom.isBefore(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isAtSameMomentAs(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+
+        if (
+          newBorrowingTimeFrom.isBefore(existedBorrowingTimeFrom) &&
+          newBorrowingTimeUntil.isAfter(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+
+        if (
+          newBorrowingTimeFrom.isAfter(existedBorrowingTimeFrom) &&
+          newBorrowingTimeFrom.isBefore(existedBorrowingTimeUntil) &&
+          newBorrowingTimeUntil.isAfter(existedBorrowingTimeUntil)
+        ) {
+          return doc;
+        }
+      }
+      
+      return null;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
+  }
+
+  Future<bool> checkIfBorrowingTimeIsSameAsClassSchedule({
+    required String classId,
+    required DateTime date,
+    required TimeOfDay timeFrom,
+    required TimeOfDay timeUntil
+  }) async {
+    // TODO: Check if the time is same as the class regular schedules
+    // try {
+    //   final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    //   final newBorrowingTimeFrom = DateTime(date.year, date.month, date.day, timeFrom.hour, timeFrom.minute);
+    //   final newBorrowingTimeUntil = DateTime(date.year, date.month, date.day, timeUntil.hour, timeUntil.minute);
+
+    //   final classDocRef = FirebaseFirestore.instance.doc('classes/$classId');
+
+    //   final schedules = await db.collection('regular_schedules')
+    //     .where('class_id', isEqualTo: classDocRef)
+    //     .get();
+
+    //   for (final doc in schedules.docs) {
+    //     final scheduleWeekday = (doc.get('day') as Timestamp).toDate().weekday;
+        
+    //     if (scheduleWeekday == date.weekday) {
+    //       final scheduleTimeFrom = (doc.get('time_from') as Timestamp).toDate();
+    //       final scheduleTimeUntil = (doc.get('time_until') as Timestamp).toDate();
+
+    //       if (
+    //         newBorrowingTimeFrom.isAtSameMomentAs(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isBefore(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+
+    //       if (
+    //         newBorrowingTimeFrom.isAtSameMomentAs(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isAtSameMomentAs(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+          
+    //       if (
+    //         newBorrowingTimeFrom.isAtSameMomentAs(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isAfter(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+
+    //       if (
+    //         newBorrowingTimeFrom.isBefore(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isAfter(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isBefore(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+          
+    //       if (
+    //         newBorrowingTimeFrom.isBefore(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isAtSameMomentAs(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+
+    //       if (
+    //         newBorrowingTimeFrom.isBefore(scheduleTimeFrom) &&
+    //         newBorrowingTimeUntil.isAfter(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+
+    //       if (
+    //         newBorrowingTimeFrom.isAfter(scheduleTimeFrom) &&
+    //         newBorrowingTimeFrom.isBefore(scheduleTimeUntil) &&
+    //         newBorrowingTimeUntil.isAfter(scheduleTimeUntil)
+    //       ) {
+    //         return true;
+    //       }
+    //     }
+    //   }
+      
+    //   return false;
+    // } on Exception catch (e) {
+    //   debugPrint(e.toString());
+    //   return false;
+    // }
+
+    return false;
+  }
+
   Future<bool> cancelBorrowingById(String borrowingId) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -127,13 +302,19 @@ class BorrowingFirebaseService {
     }
   }
 
-  Future<bool> acceptBorrowing(String borrowingId) async {
+  Future<bool> acceptBorrowing({
+    required String borrowingId,
+    required String staffId,
+  }) async {
     try {
       final FirebaseFirestore db = FirebaseFirestore.instance;
       
       await db.collection('borrowings')
         .doc(borrowingId)
-        .update({ 'status': 2 });
+        .update({
+          'status': 2,
+          'staff_id': db.collection('users').doc(staffId)
+        });
       
       return true;
     } on Exception catch (e) {

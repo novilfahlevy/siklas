@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:siklas/models/borrowing_model.dart';
 import 'package:siklas/models/class_model.dart';
 import 'package:siklas/models/floor_model.dart';
@@ -109,7 +110,14 @@ class StaffBorrowingViewModel extends ChangeNotifier {
     isAcceptingBorrowing = true;
 
     BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
-    await repository.acceptBorrowing(borrowingModel!.id);
+
+    final prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString('userId');
+
+    await repository.acceptBorrowing(
+      borrowingId: borrowingModel!.id,
+      staffId: userId!
+    );
 
     isAcceptingBorrowing = false;
   }

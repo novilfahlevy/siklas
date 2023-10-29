@@ -37,8 +37,8 @@ class RejectBorrowingViewModel extends ChangeNotifier {
 
     if (formKey.currentState!.validate()) {
       BorrowingFirebaseRepository repository = BorrowingFirebaseRepository();
+      
       final prefs = await SharedPreferences.getInstance();
-
       String? staffId = prefs.getString('userId');
 
       await repository.rejectBorrowing(

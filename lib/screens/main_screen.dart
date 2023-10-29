@@ -30,10 +30,10 @@ class _MainScreenState extends State<MainScreen> {
     if (mounted) {
       final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
       final mainViewModel = Provider.of<MainViewModel>(context, listen: false);
-      final userBorrowingsViewModel = Provider.of<BorrowingHistoriesViewModel>(context, listen: false);
+      final borrowingHistoriesViewModel = Provider.of<BorrowingHistoriesViewModel>(context, listen: false);
 
-      if (mainViewModel.selectedScreenIndex == 1 && !userBorrowingsViewModel.areBorrowingsFetched) {
-        userBorrowingsViewModel.fetchBorrowingsByUserId(loginViewModel.userModel!.id);
+      if (mainViewModel.selectedScreenIndex == 1) {
+        borrowingHistoriesViewModel.fetchBorrowingsByUserId(loginViewModel.userModel!.id);
       }
     }
   }
