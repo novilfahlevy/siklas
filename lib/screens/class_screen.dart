@@ -177,6 +177,11 @@ class _ClassScreenState extends State<ClassScreen> {
             return const SizedBox.shrink();
           }
 
+          // Display nothing if the class is not found
+          if (state.classModel == null) {
+            return const SizedBox.shrink();
+          }
+
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: double.infinity,

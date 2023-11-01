@@ -83,12 +83,15 @@ class StaffBorrowingViewModel extends ChangeNotifier {
       final UserFirebaseRepository userRepository = UserFirebaseRepository();
 
       borrowingModel = await borrowingRepository.getBorrowingById(borrowingId);
-      classModel = await classRepository.getClassById(borrowingModel!.classId);
-      floorModel = await floorRepository.getFloorById(classModel!.floorId);
-      majorModel = await majorRepository.getMajorById(borrowingModel!.majorId);
 
-      if (borrowingModel!.staffId != '') {
-        staffModel = await userRepository.getUserById(borrowingModel!.staffId!);
+      if (borrowingModel != null) {
+        classModel = await classRepository.getClassById(borrowingModel!.classId);
+        floorModel = await floorRepository.getFloorById(classModel!.floorId);
+        majorModel = await majorRepository.getMajorById(borrowingModel!.majorId);
+        
+        if (borrowingModel!.staffId != '') {
+          staffModel = await userRepository.getUserById(borrowingModel!.staffId!);
+        }
       }
     } on Exception catch (e) {
       debugPrint(e.toString());

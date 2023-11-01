@@ -11,7 +11,7 @@ class BorrowingFirebaseRepository implements BorrowingRepositoryInterface {
     final borrowingDoc = await service.getBorrowingById(borrowingId);
 
 
-    if (borrowingDoc != null) {
+    if (borrowingDoc != null && borrowingDoc.exists) {
       final borrowingMap = borrowingDoc.data() as Map<String, dynamic>;
 
       String classId = '';

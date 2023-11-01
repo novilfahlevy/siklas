@@ -236,6 +236,11 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
             if (state.isFetchingBorrowing) {
               return const SizedBox.shrink();
             }
+
+            // Display nothing when borrowing is not found
+            if (state.borrowingModel == null) {
+              return const SizedBox.shrink();
+            }
     
             if (state.borrowingModel!.status == 0) {
               return Container(

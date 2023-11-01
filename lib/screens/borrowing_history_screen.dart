@@ -220,7 +220,17 @@ class _BorrowingHistoryScreenState extends State<BorrowingHistoryScreen> {
         builder: (context, state, _) {
           // Display nothing while borrowings are being fetched
           // and when the borrowing has been responded (the status is not 0)
-          if (state.isFetchingBorrowing || state.borrowingModel!.status != 0) {
+          if (state.isFetchingBorrowing) {
+            return const SizedBox.shrink();
+          }
+
+          // Display nothing if the class is not found
+          if (state.borrowingModel == null) {
+            return const SizedBox.shrink();
+          }
+
+          // Display nothing if the class' status is 'waiting'
+          if (state.borrowingModel!.status != 0) {
             return const SizedBox.shrink();
           }
 
