@@ -143,7 +143,7 @@ class _StaffBorrowingScreenState extends State<StaffBorrowingScreen> {
                                   ? Theme.of(context).colorScheme.secondary
                                   : state.borrowingModel!.status == 1
                                     ? Theme.of(context).colorScheme.error
-                                    : Theme.of(context).colorScheme.primary,
+                                    : Colors.green,
                                 textColor: Colors.white
                               ),
                               const SizedBox(width: 10,),
